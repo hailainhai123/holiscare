@@ -24,20 +24,20 @@ class GlobalController extends GetxController {
 
   @override
   void onInit() async {
-    // await checkLogin();
+    await checkLogin();
     super.onInit();
   }
 
 
   Future<void> checkLogin() async {
     print('checklogin');
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 1));
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final signIn = prefs.getBool(Constants.signedIn) ?? false;
     if (signIn) {
       Get.toNamed(kRouteIndex);
     } else {
-      Get.toNamed(kLoginPage);
+      Get.toNamed(kSplash);
     }
   }
 

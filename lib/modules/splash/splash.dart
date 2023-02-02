@@ -27,32 +27,35 @@ class _SplashPageState extends State<SplashPage> {
         color: AppColors.primary,
         padding: const EdgeInsets.symmetric(vertical: 64.0),
         child: Column(
-        children: [
-        SizedBox(
-          height: Get.height / 4,
-        ),
-        Expanded(
-            child: Column(
           children: [
-            Image.asset("assets/images/bg_image.png"),
+            SizedBox(
+              height: Get.height / 4,
+            ),
+            Expanded(
+                child: Column(
+              children: [
+                Image.asset("assets/images/bg_image.png"),
+              ],
+            )),
+            const SizedBox(
+              height: 16.0,
+            ),
+            Row(
+              children: [
+                const Spacer(),
+                Expanded(
+                    child: AppButton(
+                        title: 'Bắt đầu',
+                        onPressed: () {
+                          Future.delayed(const Duration(seconds: 0), () {
+                            Get.toNamed(kAuth);
+                          });
+                        })),
+                const Spacer(),
+              ],
+            ),
           ],
-        )),
-        const SizedBox(
-          height: 16.0,
         ),
-        Row(
-          children: [
-            const Spacer(),
-            Expanded(child: AppButton(title: 'Bắt đầu', onPressed: () {
-              Future.delayed(const Duration(seconds: 0), (){
-                Get.toNamed(kAuth);
-              });
-            })),
-            const Spacer(),
-          ],
-        ),
-        ],
-      ),
       ),
     );
   }

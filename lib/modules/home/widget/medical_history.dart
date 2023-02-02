@@ -37,16 +37,16 @@ class _MedicalHistoryState extends State<MedicalHistory> {
 
   loadPreviousEvents() {
     mySelectedEvents = {
-      "2023-02-13": [
-        {"eventDescp": "11", "eventTitle": "111"},
-        {"eventDescp": "22", "eventTitle": "22"}
-      ],
-      "2023-02-25": [
-        {"eventDescp": "22", "eventTitle": "22"}
-      ],
-      "2023-02-20": [
-        {"eventTitle": "ss", "eventDescp": "ss"}
-      ]
+      // "2023-02-13": [
+      //   {"eventDescp": "11", "eventTitle": "111"},
+      //   {"eventDescp": "22", "eventTitle": "22"}
+      // ],
+      // "2023-02-25": [
+      //   {"eventDescp": "22", "eventTitle": "22"}
+      // ],
+      // "2023-02-20": [
+      //   {"eventTitle": "ss", "eventDescp": "ss"}
+      // ]
     };
   }
 

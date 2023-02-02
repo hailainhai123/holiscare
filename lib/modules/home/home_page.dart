@@ -110,7 +110,7 @@ const List<Choice> choices = <Choice>[
   Choice(title: 'Dương Mạc GIA NHI', image: 'assets/students/l.h.chi.jpeg'),
   Choice(title: 'NGUYỄN HOÀNG SƠN', image: 'assets/students/p.t.anh.jpeg'),
   Choice(title: 'LÊ BÌNH SƠN', image: 'assets/students/p.h.anh.jpeg'),
-  Choice(title: 'VŨ THU THẢO', image: 'assets/students/p.g.hung.jpeg'),
+  Choice(title: 'VŨ THU THẢO', image: 'assets/students/p.t.anh.jpeg'),
   Choice(title: 'LA QUỲNH TRÂM', image: 'assets/students/l.q.tram.jpeg'),
   Choice(title: 'VŨ NAM TRUNG', image: 'assets/students/l.v.d.anh.jpeg'),
   Choice(title: 'PHẠM ĐỖ MINH TÂM', image: 'assets/students/d.m.duong.jpeg'),

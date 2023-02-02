@@ -20,7 +20,7 @@ class LoginController extends GetxController {
 
   @override
   void onInit() async {
-    await checkLogin();
+    // await checkLogin();
     // TODO: implement onInit
     super.onInit();
   }
