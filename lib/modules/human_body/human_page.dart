@@ -29,9 +29,10 @@ class _Human3DPageState extends State<Human3DPage> {
       appBar: CustomAppBar(
         title: 'Mô hình cơ thể',
         isBack: false,
+        backgroundColor: globalController.colorBackground.value,
       ),
       body: Container(
-        color: AppColors.primary,
+        color: globalController.colorBackground.value,
         child: Cube(
           onSceneCreated: (Scene scene) {
             scene.world.add(humanBody);

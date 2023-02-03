@@ -154,7 +154,7 @@ class _MedicalHistoryState extends State<MedicalHistory> {
       ),
       body: Container(
         height: Get.height,
-        color: AppColors.primary,
+        color: AppColors.lightPrimary,
         child: Column(
           children: [
             TableCalendar(

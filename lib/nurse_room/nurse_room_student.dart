@@ -4,8 +4,11 @@ import 'package:holiscare/constant/routes.dart';
 import 'package:holiscare/utils/colors.dart';
 import 'package:holiscare/widget_custom/app_bar.dart';
 
+import '../utils/global_controller.dart';
+
 class NurseRoomStudent extends StatelessWidget {
-  const NurseRoomStudent({Key? key}) : super(key: key);
+  NurseRoomStudent({Key? key}) : super(key: key);
+  final GlobalController globalController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -13,9 +16,10 @@ class NurseRoomStudent extends StatelessWidget {
       appBar: CustomAppBar(
         title: 'Phòng y tế',
         isBack: true,
+        backgroundColor: globalController.colorBackground.value,
       ),
       body: Container(
-        color: AppColors.primary,
+        color: globalController.colorBackground.value,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -58,7 +62,7 @@ class NurseRoomStudent extends StatelessWidget {
       alignment: Alignment.bottomRight,
       decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(20.0)),
-          color: AppColors.primary500,
+          color: globalController.colorBackground500.value,
           boxShadow: [
             BoxShadow(color: Colors.black.withAlpha(100), blurRadius: 10.0),
           ]),

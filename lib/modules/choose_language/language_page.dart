@@ -22,7 +22,7 @@ class _LanguagePageState extends State<LanguagePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: AppColors.primary,
+        color: AppColors.lightPrimary,
         padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -57,8 +57,8 @@ class _LanguagePageState extends State<LanguagePage> {
                         borderRadius:
                         const BorderRadius.all(Radius.circular(20.0)),
                         color: !checkColor1
-                            ? AppColors.primary
-                            : AppColors.primary500,
+                            ? AppColors.lightPrimary
+                            : AppColors.lightPrimary500,
                         boxShadow: [
                           BoxShadow(
                               color: Colors.black.withAlpha(100),
@@ -97,8 +97,8 @@ class _LanguagePageState extends State<LanguagePage> {
                         borderRadius:
                         const BorderRadius.all(Radius.circular(20.0)),
                         color: !checkColor2
-                            ? AppColors.primary
-                            : AppColors.primary500,
+                            ? AppColors.lightPrimary
+                            : AppColors.lightPrimary500,
                         boxShadow: [
                           BoxShadow(
                               color: Colors.black.withAlpha(100),

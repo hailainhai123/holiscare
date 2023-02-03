@@ -4,8 +4,11 @@ import 'package:holiscare/constant/routes.dart';
 import 'package:holiscare/utils/colors.dart';
 import 'package:holiscare/widget_custom/app_bar.dart';
 
+import '../../../utils/global_controller.dart';
+
 class HealthData extends StatelessWidget {
-  const HealthData({Key? key}) : super(key: key);
+  HealthData({Key? key}) : super(key: key);
+  final GlobalController globalController = Get.find();
 
   static const List<String> title = <String>[
     'Dữ liệu sức khoẻ',
@@ -31,9 +34,10 @@ class HealthData extends StatelessWidget {
       appBar: CustomAppBar(
         title: 'Dữ liệu chung',
         isBack: false,
+        backgroundColor: globalController.colorBackground.value,
       ),
       body: Container(
-        color: AppColors.primary,
+        color: globalController.colorBackground.value,
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
@@ -176,7 +180,7 @@ class HealthData extends StatelessWidget {
               blurRadius: 5)
         ],
         borderRadius: BorderRadius.circular(8),
-        color: AppColors.primary500,
+        color: globalController.colorBackground500.value,
       ),
       child: Row(
         children: [

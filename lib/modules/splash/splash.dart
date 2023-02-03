@@ -24,7 +24,7 @@ class _SplashPageState extends State<SplashPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: AppColors.primary,
+        color: AppColors.lightPrimary,
         padding: const EdgeInsets.symmetric(vertical: 64.0),
         child: Column(
           children: [

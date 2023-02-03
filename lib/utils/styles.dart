@@ -15,7 +15,7 @@ class Styles {
   static TextStyle heading2 = heading.copyWith(
     height: 32 / 26,
     fontSize: 26.0,
-    color: AppColors.primary,
+    color: AppColors.lightPrimary,
   );
 
 
@@ -23,14 +23,14 @@ class Styles {
   static TextStyle heading4 = heading.copyWith(
     height: 24 / 18,
     fontSize: 16.0,
-    color: AppColors.primary,
+    color: AppColors.lightPrimary,
   );
 
   // Use for: Sub-section and field group headings.
   static TextStyle heading5 = heading.copyWith(
     height: 20 / 14,
     fontSize: 14.0,
-    color: AppColors.primary,
+    color: AppColors.lightPrimary,
   );
 
   //Use for: content, main typeface for App
@@ -55,7 +55,7 @@ class Styles {
   );
 
   static TextStyle descriptionNoti = const TextStyle(
-      height: 16 / 13, fontSize: 13.0, color: AppColors.primary);
+      height: 16 / 13, fontSize: 13.0, color: AppColors.lightPrimary);
 
   static TextStyle subtitleSmall = const TextStyle(
       fontSize: 12.0, fontFamily: 'InterRegular', height: 14.0 / 12.0);
@@ -236,7 +236,7 @@ class Styles {
       );
     } else {
       return Styles.heading4
-          .copyWith(color: AppColors.primary,);
+          .copyWith(color: AppColors.lightPrimary,);
     }
   }
 

@@ -4,9 +4,11 @@ import 'package:holiscare/constant/routes.dart';
 import 'package:holiscare/widget_custom/app_bar.dart';
 
 import '../../../utils/colors.dart';
+import '../../../utils/global_controller.dart';
 
 class NurseRoom extends StatelessWidget {
-  const NurseRoom({Key? key}) : super(key: key);
+  NurseRoom({Key? key}) : super(key: key);
+  final GlobalController globalController = Get.find();
   static const List<String> students = <String>[
     'Lê Vũ Đức Anh',
     'Phan Hà Anh',
@@ -41,9 +43,10 @@ class NurseRoom extends StatelessWidget {
       appBar: CustomAppBar(
         title: 'Phòng y tế',
         isBack: true,
+        backgroundColor: globalController.colorBackground.value,
       ),
       body: Container(
-        color: AppColors.primary,
+        color: globalController.colorBackground.value,
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

@@ -26,7 +26,7 @@ class ProfilePage extends GetView<UserController> {
         isBack: true,
       ),
       body: Container(
-        color: AppColors.primary,
+        color: AppColors.lightPrimary,
         height: double.infinity,
         child: SingleChildScrollView(
           child: Container(
@@ -40,7 +40,7 @@ class ProfilePage extends GetView<UserController> {
                     height: 15,
                   ),
                   CircleAvatar(
-                      backgroundColor: AppColors.primary500,
+                      backgroundColor: AppColors.lightPrimary500,
                       minRadius: 40,
                       child: Text(
                         controller.ten[0].toUpperCase(),
@@ -63,7 +63,7 @@ class ProfilePage extends GetView<UserController> {
                             blurRadius: 5)
                       ],
                       borderRadius: BorderRadius.circular(8),
-                      color: AppColors.primary500,
+                      color: AppColors.lightPrimary500,
                     ),
                     child: Column(
                       children: [

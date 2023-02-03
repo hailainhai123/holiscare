@@ -141,10 +141,11 @@ class DetailRecord extends GetView<HomeController> {
       appBar: CustomAppBar(
         title: 'Dữ liệu sử dụng',
         isBack: true,
+        backgroundColor: globalController.colorBackground.value,
       ),
       body: SingleChildScrollView(
         child: Container(
-          color: AppColors.primary,
+          color: globalController.colorBackground.value,
           padding: const EdgeInsets.all(16),
           // width: double.infinity,
           child: Column(

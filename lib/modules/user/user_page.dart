@@ -42,57 +42,65 @@ class _UserPageState extends State<UserPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(
-        title: 'Tài khoản',
-        isBack: false,
-      ),
-      body: Container(
-        color: AppColors.primary,
-        height: double.infinity,
-        child: SingleChildScrollView(
-          child: Container(
-            width: Get.width,
-            padding:
-                const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
-            child: Obx(() {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // infomationUser(),
-                  // const SizedBox(
-                  //   height: 16.0,
-                  // ),
-                  getInformation(),
-                  const SizedBox(
-                    height: 16.0,
-                  ),
-                  apperance(),
-                  const SizedBox(
-                    height: 16.0,
-                  ),
-                  otherSetting(),
-                  const SizedBox(
-                    height: 16.0,
-                  ),
-                  _logoutContainer(
-                    'Đăng xuất',
-                    globalController.colorBackground.value,
-                    const Icon(
-                      Icons.power_settings_new,
-                      color: Colors.red,
-                    ),
-                    context,
-                  ),
-                  const SizedBox(
-                    height: 16.0,
-                  ),
-                ],
-              );
-            }),
+    return Obx(
+      () {
+        return Scaffold(
+          appBar: CustomAppBar(
+            title: 'Tài khoản',
+            isBack: false,
+            backgroundColor: globalController.colorBackground.value,
           ),
-        ),
-      ),
+          body: Obx(() {
+              return Container(
+                color: globalController.colorBackground.value,
+                height: double.infinity,
+                child: SingleChildScrollView(
+                  child: Container(
+                    width: Get.width,
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+                    child: Obx(() {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // infomationUser(),
+                          // const SizedBox(
+                          //   height: 16.0,
+                          // ),
+                          getInformation(),
+                          const SizedBox(
+                            height: 16.0,
+                          ),
+                          apperance(),
+                          const SizedBox(
+                            height: 16.0,
+                          ),
+                          otherSetting(),
+                          const SizedBox(
+                            height: 16.0,
+                          ),
+                          _logoutContainer(
+                            'Đăng xuất',
+                            globalController.colorBackground.value,
+                            const Icon(
+                              Icons.power_settings_new,
+                              color: Colors.red,
+                            ),
+                            context,
+                          ),
+                          const SizedBox(
+                            height: 16.0,
+                          ),
+                        ],
+                      );
+                    }),
+                  ),
+                ),
+              );
+            }
+          ),
+        );
+      }
     );
   }
 
@@ -112,6 +120,8 @@ class _UserPageState extends State<UserPage> {
                         await preferences.clear();
                         navController.currentIndex.value = 0;
                         navController.currentIndex2.value = 0;
+                        globalController.colorBackground.value = AppColors.lightPrimary;
+                        globalController.colorBackground500.value = AppColors.lightPrimary500;
                         Get.offAndToNamed(kAuth);
                       },
                       child: const Text('Tiếp tục'),
@@ -179,7 +189,7 @@ class _UserPageState extends State<UserPage> {
               blurRadius: 5)
         ],
         borderRadius: BorderRadius.circular(8),
-        color: AppColors.primary500,
+        color: globalController.colorBackground500.value,
       ),
       child: InkWell(
         onTap: () {
@@ -213,7 +223,7 @@ class _UserPageState extends State<UserPage> {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       width: Get.width,
       decoration: BoxDecoration(
-        color: AppColors.primary500,
+        color: globalController.colorBackground500.value,
         boxShadow: [
           BoxShadow(
               color: Colors.black.withOpacity(0.3),
@@ -272,10 +282,12 @@ class _UserPageState extends State<UserPage> {
                   // This is called when the user toggles the switch.
                   globalController.darkTheme.value = value;
                   if (globalController.darkTheme.value) {
-                    globalController.colorBackground.value = Colors.black;
-                    globalController.colorText.value = Colors.white;
+                    globalController.colorBackground.value = AppColors.darkPrimary;
+                    globalController.colorBackground500.value = AppColors.darkPrimary500;
+                    globalController.colorText.value = Colors.black;
                   } else {
-                    globalController.colorBackground.value = Colors.white;
+                    globalController.colorBackground.value = AppColors.lightPrimary;
+                    globalController.colorBackground500.value = AppColors.lightPrimary500;
                     globalController.colorText.value = Colors.black;
                   }
                 },
@@ -308,7 +320,7 @@ class _UserPageState extends State<UserPage> {
               blurRadius: 5)
         ],
         borderRadius: BorderRadius.circular(8),
-        color: AppColors.primary500,
+        color: globalController.colorBackground500.value,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

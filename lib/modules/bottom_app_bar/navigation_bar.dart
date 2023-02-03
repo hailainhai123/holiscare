@@ -37,8 +37,8 @@ class NavigationBottomBar extends GetView<NavController> {
   Widget build(BuildContext context) {
     return Obx(() {
       return Container(
-        decoration: const BoxDecoration(
-          color: AppColors.primary,
+        decoration: BoxDecoration(
+          color: globalController.colorBackground.value,
         ),
         child: globalController.isTeacher.value
             ? SalomonBottomBar(

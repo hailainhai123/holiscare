@@ -18,9 +18,10 @@ class DataPage extends GetView<DataController> {
       appBar: CustomAppBar(
         title: 'Dữ liệu chung',
         isBack: false,
+        backgroundColor: globalController.colorBackground.value,
       ),
       body: Container(
-        color: AppColors.primary,
+        color: globalController.colorBackground.value,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -63,7 +64,7 @@ class DataPage extends GetView<DataController> {
       alignment: Alignment.bottomRight,
       decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(20.0)),
-          color: AppColors.primary500,
+          color: globalController.colorBackground500.value,
           boxShadow: [
             BoxShadow(color: Colors.black.withAlpha(100), blurRadius: 10.0),
           ]),

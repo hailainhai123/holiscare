@@ -4,10 +4,12 @@ import 'package:holiscare/constant/routes.dart';
 import 'package:holiscare/modules/home/home_controller.dart';
 
 import '../../../utils/colors.dart';
+import '../../../utils/global_controller.dart';
 import '../../../widget_custom/app_bar.dart';
 
 class DetailClassroom extends GetView<HomeController> {
-  const DetailClassroom({Key? key}) : super(key: key);
+  DetailClassroom({Key? key}) : super(key: key);
+  final GlobalController globalController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +20,10 @@ class DetailClassroom extends GetView<HomeController> {
         appBar: CustomAppBar(
           title: 'Lớp học',
           isBack: true,
+          backgroundColor: globalController.colorBackground.value,
         ),
         body: Container(
-          color: AppColors.primary,
+          color: globalController.colorBackground.value,
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
@@ -76,7 +79,7 @@ class DetailClassroom extends GetView<HomeController> {
       alignment: Alignment.bottomRight,
       decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(20.0)),
-          color: AppColors.primary500,
+          color: globalController.colorBackground500.value,
           boxShadow: [
             BoxShadow(color: Colors.black.withAlpha(100), blurRadius: 10.0),
           ]),

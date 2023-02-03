@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:holiscare/constant/image_path.dart';
 import 'package:holiscare/constant/routes.dart';
 import 'package:holiscare/utils/global_controller.dart';
 import '../../utils/colors.dart';
@@ -36,9 +35,10 @@ class _HomePageState extends State<HomePage> {
         appBar: CustomAppBar(
           title: 'Lớp học',
           isBack: false,
+          backgroundColor: globalController.colorBackground.value,
         ),
         body: Container(
-          color: AppColors.primary,
+          color: globalController.colorBackground.value,
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [

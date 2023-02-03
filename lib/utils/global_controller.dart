@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:holiscare/utils/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constant/routes.dart';
@@ -16,7 +17,8 @@ class GlobalController extends GetxController {
   var fontSize = 14.0.obs;
   var isLogin = false.obs;
   var darkTheme = false.obs;
-  var colorBackground = Colors.white.obs;
+  var colorBackground = AppColors.lightPrimary.obs;
+  var colorBackground500 = AppColors.lightPrimary500.obs;
   var colorText = Colors.black.obs;
   var isTeacher = true.obs;
   var nameStudent = ''.obs;

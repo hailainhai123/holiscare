@@ -39,10 +39,11 @@ class _DetailRequestState extends State<DetailRequest> {
       appBar: CustomAppBar(
         title: 'Chi tiết',
         isBack: true,
+        backgroundColor: globalController.colorBackground.value,
       ),
       body: Container(
         height: Get.height,
-        color: AppColors.primary,
+        color: globalController.colorBackground.value,
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

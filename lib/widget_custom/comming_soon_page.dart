@@ -18,7 +18,7 @@ class ComingSoonPage extends StatelessWidget{
       body: TouchableOpacity(
         onTap: () => Get.toNamed(kRouteIndex),
         child: Container(
-          color: AppColors.primary,
+          color: AppColors.lightPrimary,
           padding:const EdgeInsets.symmetric(
             horizontal: 16,
           ),
@@ -26,7 +26,7 @@ class ComingSoonPage extends StatelessWidget{
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CircleAvatar(
-                backgroundColor: AppColors.primary,
+                backgroundColor: AppColors.lightPrimary,
                 maxRadius: 64,
                 child: Image.asset(
                   'assets/images/icon_holiscare.png',
@@ -77,7 +77,7 @@ class ComingSoonPage extends StatelessWidget{
                       ),
                       Container(
                         decoration: const BoxDecoration(
-                          color: AppColors.primary,
+                          color: AppColors.lightPrimary,
                           boxShadow: [
                              BoxShadow(
                               color: Color.fromRGBO(194, 198, 201, 0.3),
