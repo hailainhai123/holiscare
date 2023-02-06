@@ -78,6 +78,7 @@ class Constants {
   static String pass = "pass";
   static String user = "user";
   static String signedIn = "signedIn";
+  static String isTeacher = "teacher";
   static double buttonHeight = 48.0;
   static double buttonHeightSmall = 40.0;
 

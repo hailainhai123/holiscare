@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' hide Response, FormData, MultipartFile;
+import 'package:holiscare/model/health_request.dart';
 import 'package:holiscare/model/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -11,7 +12,7 @@ import 'custom_log.dart';
 const int kDefaultTimeOut = 60 * 1000;
 
 class ApiDioController {
-  static const _baseUrl = 'http://103.237.145.184:3000';
+  static const _baseUrl = 'http://localhost:5143';
 
   static BaseOptions options = BaseOptions(
     baseUrl: _baseUrl,
@@ -30,7 +31,7 @@ class ApiDioController {
       print(url);
       // dio.options.headers['Authorization'] =
       // "Bearer ${Get.find<GlobalController>().accessToken.value}";
-      Response<Map<String, dynamic>> response = await dio.get(
+      Response<List<dynamic>> response = await dio.get(
         url,
         queryParameters: query,
       );
@@ -38,13 +39,7 @@ class ApiDioController {
       print('ApiResponse: $response');
 
       if (response.statusCode == 200) {
-        if (response.data!['message'] == "success") {
-          if (response.data!['data'] != null) {
-            return asModel(response.data!['data']);
-          } else {
-            return asModel(response.data!);
-          }
-        }
+        return asModel(response.data!);
       }
       return null;
     } on DioError catch (e) {
@@ -167,19 +162,12 @@ class ApiDioController {
     required String url,
     required Dio dio,
     Map<String, dynamic>? body,
-    required Function(Map<String, dynamic>) asModel,
   }) async {
     try {
-      Response<Map<String, dynamic>> response = await dio.delete(
+      Response<String> response = await dio.delete(
         url,
         data: body,
       );
-      if (response.statusCode == 200) {
-        if (response.data!['message']) {
-          return asModel(response.data!);
-        }
-      }
-      return null;
     } on DioError catch (e) {
       CustomLog.log(e);
       return null;
@@ -189,20 +177,47 @@ class ApiDioController {
     }
   }
 
-  // static Future<List<DeviceModel>> getDevice() async {
-  //   Dio dio = Dio(options);
-  //
-  //   List<DeviceModel> listDevice = [];
-  //   await getData<List<DeviceModel>>(
-  //     url: ApiURL.getDevice,
-  //     dio: dio,
-  //     asModel: (map) {
-  //       final responseList = map as List;
-  //       listDevice = responseList.map((e) => DeviceModel.fromJson(e)).toList();
-  //     },
-  //   );
-  //   return listDevice;
-  // }
+  static Future<List<HealthRequestModel>> getRequest() async {
+    Dio dio = Dio(options);
+
+    List<HealthRequestModel> listRequest = [];
+    print('1');
+    await getData<List<HealthRequestModel>>(
+      url: ApiURL.getRequest,
+      dio: dio,
+      asModel: (map) {
+        final responseList = map as List;
+        listRequest = responseList.map((e) => HealthRequestModel.fromJson(e)).toList();
+      },
+    );
+    return listRequest;
+  }
+
+  static Future<void> postRequest(String name, String teacher, String reason, String time) async {
+    Dio dio = Dio(options);
+
+    await postMethods(
+      url: ApiURL.getRequest,
+      dio: dio,
+      body: {"name" : name, "teacher" : teacher, 'reason' : reason, 'time' : time,},
+      asModel: (map) {
+        if (map['data'] != null) {
+          final responseList = map['data'] as List;
+        }
+      },
+    );
+  }
+
+  static Future<void> deleteRequest(String id) async {
+    Dio dio = Dio(options);
+
+    List<HealthRequestModel> listRequest = [];
+    print('1');
+    await deleteMethod<List<HealthRequestModel>>(
+      url: '${ApiURL.getRequest}/$id',
+      dio: dio,
+    );
+  }
   //
   // static Future<List<DeviceModel>> getDeviceForIdStation(String idStation) async {
   //   Dio dio = Dio(options);

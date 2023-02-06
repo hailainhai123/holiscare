@@ -124,6 +124,7 @@ class _LoginPageState extends State<LoginPage> {
             };
             bool result = await prefs.setString('user', jsonEncode(user));
             await prefs.setBool(Constants.signedIn, true);
+            await prefs.setBool(Constants.isTeacher, true);
             print('haiabc $result');
             Get.toNamed(kRouteIndex);
           } else {
@@ -153,6 +154,7 @@ class _LoginPageState extends State<LoginPage> {
                     };
                     bool result = await prefs.setString('user', jsonEncode(user));
                     await prefs.setBool(Constants.signedIn, true);
+                    await prefs.setBool(Constants.isTeacher, false);
                     print('haiabc $result');
                     Get.toNamed(kRouteIndex);
                     return;

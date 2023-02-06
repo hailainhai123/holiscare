@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:holiscare/constant/routes.dart';
+import 'package:holiscare/model/health_request.dart';
 import 'package:holiscare/widget_custom/app_bar.dart';
 
 import '../../../utils/colors.dart';
 import '../../../utils/global_controller.dart';
+import '../data_controller.dart';
 
-class NurseRoom extends StatelessWidget {
+class NurseRoom extends GetView<DataController> {
   NurseRoom({Key? key}) : super(key: key);
   final GlobalController globalController = Get.find();
   static const List<String> students = <String>[
@@ -45,84 +47,104 @@ class NurseRoom extends StatelessWidget {
         isBack: true,
         backgroundColor: globalController.colorBackground.value,
       ),
-      body: Container(
-        color: globalController.colorBackground.value,
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+      body: RefreshIndicator(
+        onRefresh: () async {
+          print('1');
+          await controller.getListRequest();
+        },
+        child: Obx(() {
+          return Container(
+            color: globalController.colorBackground.value,
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.asset(
-                  'assets/images/icon_sos.png',
-                  width: 50,
-                  height: 50,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/images/icon_sos.png',
+                      width: 50,
+                      height: 50,
+                    ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    const Text('Yêu cầu đi y tế',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 18)),
+                  ],
                 ),
                 const SizedBox(
-                  width: 8,
+                  height: 8,
                 ),
-                const Text('Yêu cầu đi y tế',
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                const Divider(
+                  color: Colors.black,
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                const Text(
+                  '16/02/2023',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                const Text('Yêu cầu từ:',
+                    style: TextStyle(color: Colors.indigoAccent)),
+                const SizedBox(
+                  height: 16,
+                ),
+                if (controller.listRequest.isNotEmpty)
+                  Expanded(
+                    child: ListView.separated(
+                      itemCount: controller.listRequest.length,
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      padding: const EdgeInsets.only(top: 8),
+                      separatorBuilder: (_, index) {
+                        return const Divider(
+                          color: AppColors.lightSilver,
+                        );
+                      },
+                      itemBuilder: (context, index) {
+                        var student = controller.listRequest.value[index];
+                        return InkWell(
+                          onTap: () {
+                            Get.toNamed(
+                              kDetailRequest,
+                              parameters: {
+                                'id': '${student.id!}',
+                                'name': student.name!,
+                                'teacher': student.teacher!,
+                                'reason': student.reason!,
+                                'time': student.time!,
+                              },
+                            );
+                          },
+                          child: itemRequest(student),
+                        );
+                      },
+                    ),
+                  )
+                else
+                  const Text('Không có yêu cầu của học sinh nào'),
               ],
             ),
-            const SizedBox(
-              height: 8,
-            ),
-            const Divider(
-              color: Colors.black,
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            const Text(
-              '16/02/2023',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            const Text('Yêu cầu từ:',
-                style: TextStyle(color: Colors.indigoAccent)),
-            const SizedBox(
-              height: 16,
-            ),
-            Expanded(
-                child: ListView.separated(
-                    itemCount: students.length,
-                    physics: const ClampingScrollPhysics(),
-                    padding: const EdgeInsets.only(top: 8),
-                    separatorBuilder: (_, index) {
-                      return const Divider(
-                        color: AppColors.lightSilver,
-                      );
-                    },
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                        onTap: () {
-                          Get.toNamed(
-                            kDetailRequest,
-                            parameters: {'name': students[index]},
-                          );
-                        },
-                        child: itemRequest(students[index]),
-                      );
-                    }))
-          ],
-        ),
+          );
+        }),
       ),
     );
   }
 
-  Widget itemRequest(String name) {
+  Widget itemRequest(HealthRequestModel student) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('HS ${name.toUpperCase()}'),
+            Text('HS ${student.name!.toUpperCase()}'),
             const Icon(
               Icons.chevron_right,
               color: AppColors.black,

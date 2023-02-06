@@ -8,6 +8,7 @@ import 'package:holiscare/modules/home/widget/health_record.dart';
 import 'package:holiscare/modules/home/widget/medical_history.dart';
 import 'package:holiscare/modules/user/pages/profile_page.dart';
 import 'package:holiscare/modules/user/user_page.dart';
+import 'package:holiscare/modules/web_health/web_health.dart';
 import 'package:holiscare/nurse_room/nurse_room_student.dart';
 import 'package:holiscare/widget_custom/comming_soon_page.dart';
 
@@ -37,6 +38,7 @@ const kStationPage = '/holiscaree_station_page';
 const kAddDevicePage = '/add_device_page';
 const kDataPage = '/data_page';
 const kHealthDataPage = '/health_data_page';
+const kHealthWebview = '/health_webview';
 const kCustomTablePage = '/custom_table_page';
 const kChartPage = '/chart_page';
 const kUserPage = '/user_page';
@@ -80,6 +82,8 @@ final dataPage = GetPage(name: kDataPage, page: () => DataPage(), bindings: []);
 
 final healthDataPage = GetPage(name: kHealthDataPage, page: () => HealthData(), bindings: []);
 
+final healthWebview = GetPage(name: kHealthWebview, page: () => WebViewExample(), bindings: []);
+
 final userPage = GetPage(name: kUserPage, page: () => UserPage(), bindings: []);
 
 final inforPage = GetPage(name: kInforPage, page: () => ProfilePage(), bindings: []);
@@ -107,6 +111,7 @@ final List<GetPage> pages = [
   detailRequest,
   dataPage,
   healthDataPage,
+  healthWebview,
   userPage,
   inforPage,
   contactPage,

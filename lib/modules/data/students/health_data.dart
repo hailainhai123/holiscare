@@ -43,7 +43,7 @@ class HealthData extends StatelessWidget {
           children: [
             InkWell(
               onTap: () {
-                Get.toNamed(kCommingSoonPage);
+                Get.toNamed(kHealthWebview);
               },
               child: Container(
                 alignment: Alignment.bottomRight,
@@ -63,6 +63,7 @@ class HealthData extends StatelessWidget {
                         children: const [
                           Text(
                             'Báo sức khoẻ',
+                            style: TextStyle(fontSize: 20),
                           ),
                         ],
                       ),
@@ -143,6 +144,7 @@ class HealthData extends StatelessWidget {
               children: [
                 Text(
                   title,
+                  style: TextStyle(fontSize: 18),
                 ),
               ],
             ),

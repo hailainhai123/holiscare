@@ -81,7 +81,7 @@ class AppInput extends StatefulWidget {
       this.maxLine = 1,
       this.contentPadding,
       this.onTapField,
-      this.styleField, this.colorRightIcon, this.sizeIconRight})
+      this.styleField, this.colorRightIcon, this.sizeIconRight,})
       : super(key: key);
 
   @override

@@ -8,16 +8,16 @@ import '../../../utils/colors.dart';
 
 const List<String> time = [
   '10/08/2022',
-  '10/08/2021',
-  '10/08/2020',
-  '10/08/2019',
+  // '10/08/2021',
+  // '10/08/2020',
+  // '10/08/2019',
 ];
 
 const List<String> title = [
   'Thông tin khám sức khoẻ định kì năm học 2023 - 2022',
-  'Thông tin khám sức khoẻ định kì năm học 2022 - 2021',
-  'Thông tin khám sức khoẻ định kì năm học 2021 - 2020',
-  'Thông tin khám sức khoẻ định kì năm học 2020 - 2019',
+  // 'Thông tin khám sức khoẻ định kì năm học 2022 - 2021',
+  // 'Thông tin khám sức khoẻ định kì năm học 2021 - 2020',
+  // 'Thông tin khám sức khoẻ định kì năm học 2020 - 2019',
 ];
 
 class ListRecord extends GetView<HomeController> {
@@ -26,7 +26,7 @@ class ListRecord extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Expanded(
         child: ListView.separated(
-            itemCount: 4,
+            itemCount: 1,
             physics: const ClampingScrollPhysics(),
             padding: const EdgeInsets.only(top: 8),
             separatorBuilder: (_, index) {

@@ -36,6 +36,7 @@ class GlobalController extends GetxController {
     await Future.delayed(const Duration(seconds: 1));
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final signIn = prefs.getBool(Constants.signedIn) ?? false;
+    isTeacher.value = await prefs.getBool(Constants.isTeacher) ?? true;
     if (signIn) {
       Get.toNamed(kRouteIndex);
     } else {

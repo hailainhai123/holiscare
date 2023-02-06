@@ -8,6 +8,8 @@ import 'package:intl/intl.dart';
 import 'package:holiscare/widget_custom/app_bar.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../../utils/global_controller.dart';
+
 class MedicalHistory extends StatefulWidget {
   @override
   _MedicalHistoryState createState() => _MedicalHistoryState();
@@ -17,6 +19,8 @@ class _MedicalHistoryState extends State<MedicalHistory> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   final RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
       .toggledOff; // Can be toggled on/off by longpressing a date
+  final GlobalController globalController = Get.find();
+
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   DateTime? _rangeStart;
@@ -151,47 +155,65 @@ class _MedicalHistoryState extends State<MedicalHistory> {
       appBar: CustomAppBar(
         title: 'Lịch sử sức khoẻ',
         isBack: true,
+        backgroundColor: globalController.colorBackground.value,
       ),
       body: Container(
         height: Get.height,
-        color: AppColors.lightPrimary,
+        color: globalController.colorBackground.value,
         child: Column(
           children: [
-            TableCalendar(
-              firstDay: kFirstDay,
-              lastDay: kLastDay,
-              focusedDay: _focusedDay,
-              selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-              rangeStartDay: _rangeStart,
-              rangeEndDay: _rangeEnd,
-              calendarFormat: _calendarFormat,
-              eventLoader: _listOfDayEvents,
-              rangeSelectionMode: _rangeSelectionMode,
-              startingDayOfWeek: StartingDayOfWeek.monday,
-              calendarStyle: const CalendarStyle(
-                // Use `CalendarStyle` to customize the UI
-                outsideDaysVisible: false,
+            Card(
+              margin: const EdgeInsets.all(8.0),
+              elevation: 5.0,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10),
+                ),
+                side: BorderSide( color: AppColors.black, width: 2.0),
               ),
-              onDaySelected: (selectedDay, focusedDay) {
-                if (!isSameDay(_selectedDay, selectedDay)) {
-                  // Call `setState()` when updating the selected day
-                  setState(() {
-                    _selectedDay = selectedDay;
-                    _focusedDay = focusedDay;
-                  });
-                }
-              },
-              onFormatChanged: (format) {
-                if (_calendarFormat != format) {
-                  // Call `setState()` when updating calendar format
-                  setState(() {
-                    _calendarFormat = format;
-                  });
-                }
-              },
-              onPageChanged: (focusedDay) {
-                _focusedDay = focusedDay;
-              },
+              child: TableCalendar(
+                headerStyle: headerStyle(),
+                daysOfWeekStyle: const DaysOfWeekStyle(
+                  weekendStyle: TextStyle(color: AppColors.error500)
+                ),
+                daysOfWeekHeight: 40.0,
+                rowHeight: 60.0,
+                firstDay: kFirstDay,
+                lastDay: kLastDay,
+                focusedDay: _focusedDay,
+                selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+                rangeStartDay: _rangeStart,
+                rangeEndDay: _rangeEnd,
+                calendarFormat: _calendarFormat,
+                eventLoader: _listOfDayEvents,
+                rangeSelectionMode: _rangeSelectionMode,
+                startingDayOfWeek: StartingDayOfWeek.monday,
+                calendarStyle: const CalendarStyle(
+                  // Use `CalendarStyle` to customize the UI
+                  outsideDaysVisible: false,
+                  weekendTextStyle: TextStyle(color: AppColors.error500),
+                ),
+                onDaySelected: (selectedDay, focusedDay) {
+                  if (!isSameDay(_selectedDay, selectedDay)) {
+                    // Call `setState()` when updating the selected day
+                    setState(() {
+                      _selectedDay = selectedDay;
+                      _focusedDay = focusedDay;
+                    });
+                  }
+                },
+                onFormatChanged: (format) {
+                  if (_calendarFormat != format) {
+                    // Call `setState()` when updating calendar format
+                    setState(() {
+                      _calendarFormat = format;
+                    });
+                  }
+                },
+                onPageChanged: (focusedDay) {
+                  _focusedDay = focusedDay;
+                },
+              ),
             ),
             ..._listOfDayEvents(_selectedDay!).map(
                   (myEvents) => ListTile(
@@ -212,6 +234,35 @@ class _MedicalHistoryState extends State<MedicalHistory> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _showAddEventDialog(),
         label: const Text('Thêm sự kiện'),
+      ),
+    );
+  }
+
+  headerStyle() {
+    return HeaderStyle(
+      titleTextStyle:
+      const TextStyle(color: AppColors.black, fontSize: 20.0),
+      decoration: BoxDecoration(
+          color: globalController.colorBackground500.value,
+          borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(10),
+              topRight: Radius.circular(10))),
+      formatButtonTextStyle:
+      const TextStyle(color: AppColors.black, fontSize: 16.0),
+      formatButtonDecoration: const BoxDecoration(
+        color: AppColors.error50,
+        borderRadius: BorderRadius.all(
+          Radius.circular(5.0),
+        ), ),
+      leftChevronIcon: const Icon(
+        Icons.chevron_left,
+        color: AppColors.black,
+        size: 28,
+      ),
+      rightChevronIcon: const Icon(
+        Icons.chevron_right,
+        color: AppColors.black,
+        size: 28,
       ),
     );
   }
