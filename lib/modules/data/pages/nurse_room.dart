@@ -8,9 +8,8 @@ import '../../../utils/colors.dart';
 import '../../../utils/global_controller.dart';
 import '../data_controller.dart';
 
-class NurseRoom extends GetView<DataController> {
+class NurseRoom extends StatefulWidget {
   NurseRoom({Key? key}) : super(key: key);
-  final GlobalController globalController = Get.find();
   static const List<String> students = <String>[
     'Lê Vũ Đức Anh',
     'Phan Hà Anh',
@@ -38,6 +37,23 @@ class NurseRoom extends GetView<DataController> {
     'VŨ NAM TRUNG',
     'PHẠM ĐỖ MINH TÂM',
   ];
+
+  @override
+  State<NurseRoom> createState() => _NurseRoomState();
+}
+
+class _NurseRoomState extends State<NurseRoom> {
+  final GlobalController globalController = Get.find();
+
+  final DataController controller = Get.find();
+
+  @override
+  void initState() {
+    print('haiabc');
+    controller.getListRequest();
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,16 +127,24 @@ class NurseRoom extends GetView<DataController> {
                         var student = controller.listRequest.value[index];
                         return InkWell(
                           onTap: () {
-                            Get.toNamed(
-                              kDetailRequest,
+                            Get.offAndToNamed(kDetailRequest,
                               parameters: {
                                 'id': '${student.id!}',
                                 'name': student.name!,
                                 'teacher': student.teacher!,
                                 'reason': student.reason!,
                                 'time': student.time!,
-                              },
-                            );
+                              },);
+                            // Get.toNamed(
+                            //   kDetailRequest,
+                            //   parameters: {
+                            //     'id': '${student.id!}',
+                            //     'name': student.name!,
+                            //     'teacher': student.teacher!,
+                            //     'reason': student.reason!,
+                            //     'time': student.time!,
+                            //   },
+                            // );
                           },
                           child: itemRequest(student),
                         );

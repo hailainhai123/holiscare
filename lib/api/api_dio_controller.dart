@@ -1,12 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' hide Response, FormData, MultipartFile;
 import 'package:holiscare/model/health_request.dart';
-import 'package:holiscare/model/user_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constant/api_url.dart';
-import '../constant/routes.dart';
-import '../constant/constants.dart';
 import 'custom_log.dart';
 
 const int kDefaultTimeOut = 60 * 1000;
@@ -93,71 +89,6 @@ class ApiDioController {
     }
   }
 
-  static Future<T?> putMethods<T>({
-    required String url,
-    required Dio dio,
-    dynamic body,
-    required Function(Map<String, dynamic>) asModel,
-  }) async {
-    try {
-      // dio.options.headers['x-access-token'] =
-      //     Get.find<GlobalController>().accessToken.value;
-
-      Response<Map<String, dynamic>> response = await dio.put(url, data: body);
-      CustomLog.log(response.data);
-
-      if (response.statusCode == 200) {
-        if (response.data!['message'] == 'success') {
-          return asModel(response.data!);
-        }
-      } else if (response.statusCode == 403) {
-        return null;
-      }
-
-      return null;
-    } on DioError catch (e) {
-      CustomLog.log(e);
-      return null;
-    } catch (e) {
-      CustomLog.log(e);
-      return null;
-    }
-  }
-
-  static Future<T?> pathMethods<T>({
-    required String url,
-    required Dio dio,
-    dynamic body,
-    required Function(Map<String, dynamic>) asModel,
-  }) async {
-    try {
-      // dio.options.headers['x-access-token'] =
-      //     Get.find<GlobalController>().accessToken.value;
-
-      Response<Map<String, dynamic>> response =
-      await dio.patch(url, data: body);
-
-      CustomLog.log(response);
-
-      if (response.statusCode == 200) {
-        if (response.data!['message'] == "success") {
-          return asModel(response.data!);
-        }
-      } else if (response.statusCode == 403) {
-        // Get.find<GlobalController>().refreshToken();
-        return null;
-      }
-
-      return null;
-    } on DioError catch (e) {
-      CustomLog.log(e);
-      return null;
-    } catch (e) {
-      CustomLog.log(e);
-      return null;
-    }
-  }
-
   static Future<T?> deleteMethod<T>({
     required String url,
     required Dio dio,
@@ -218,22 +149,4 @@ class ApiDioController {
       dio: dio,
     );
   }
-  //
-  // static Future<List<DeviceModel>> getDeviceForIdStation(String idStation) async {
-  //   Dio dio = Dio(options);
-  //
-  //   List<DeviceModel> listDevice = [];
-  //   await postMethods(
-  //     url: ApiURL.getDeviceForIdStation,
-  //     dio: dio,
-  //     body: {"stationId" : idStation},
-  //     asModel: (map) {
-  //       if (map['data'] != null) {
-  //         final responseList = map['data'] as List;
-  //         listDevice = responseList.map((e) => DeviceModel.fromJson(e)).toList();
-  //       }
-  //     },
-  //   );
-  //   return listDevice;
-  // }
 }

@@ -28,7 +28,6 @@ class DataPage extends GetView<DataController> {
             // const Spacer(),
             InkWell(
               onTap: () async {
-                await controller.getListRequest();
                 Get.toNamed(kNurseRoom);
               },
               child: itemClass(

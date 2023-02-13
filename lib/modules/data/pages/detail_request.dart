@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:holiscare/constant/routes.dart';
 import 'package:holiscare/utils/colors.dart';
 import 'package:holiscare/widget_custom/app_bar.dart';
 import 'package:holiscare/widget_custom/app_button.dart';
@@ -35,10 +36,10 @@ class _DetailRequestState extends State<DetailRequest> {
   @override
   Widget build(BuildContext context) {
     controller.id.value = Get.parameters['id'] ?? '';
+    controller.name.value = Get.parameters['name'] ?? '';
     controller.teacher.value = Get.parameters['teacher'] ?? '';
     controller.reason.value = Get.parameters['reason'] ?? '';
     controller.time.value = Get.parameters['time'] ?? '';
-    print(controller.teacher.value);
     return Scaffold(
       appBar: CustomAppBar(
         title: 'Chi tiết',
@@ -247,7 +248,7 @@ class _DetailRequestState extends State<DetailRequest> {
                               title: 'Đồng ý',
                               onPressed: () async {
                                 await controller.deleteRequest(controller.id.value);
-                                Get.back();
+                                Get.offAndToNamed(kNurseRoom);
                                 Get.snackbar('Thông báo', 'Đã cho phép',
                                     snackPosition: SnackPosition.TOP);
                               }),
@@ -258,7 +259,7 @@ class _DetailRequestState extends State<DetailRequest> {
                               title: 'Từ chối',
                               onPressed: () async {
                                 await controller.deleteRequest(controller.id.value);
-                                Get.back();
+                                Get.offAndToNamed(kNurseRoom);
                                 Get.snackbar('Thông báo', 'Không cho phép',
                                     snackPosition: SnackPosition.TOP);
                               }),

@@ -74,18 +74,12 @@ class _MedicalHistoryState extends State<MedicalHistory> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextField(
-              controller: titleController,
-              textCapitalization: TextCapitalization.words,
-              decoration: const InputDecoration(
-                labelText: 'Tiêu đề',
-              ),
+            buildTextField(controller: titleController, hint: 'Tiêu đề'),
+            const SizedBox(
+              height: 20.0,
             ),
-            TextField(
-              controller: descpController,
-              textCapitalization: TextCapitalization.words,
-              decoration: const InputDecoration(labelText: 'Nội dung'),
-            ),
+            buildTextField(
+                controller: descpController, hint: 'Nội dung'),
           ],
         ),
         actions: [
@@ -160,75 +154,77 @@ class _MedicalHistoryState extends State<MedicalHistory> {
       body: Container(
         height: Get.height,
         color: globalController.colorBackground.value,
-        child: Column(
-          children: [
-            Card(
-              margin: const EdgeInsets.all(8.0),
-              elevation: 5.0,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Card(
+                margin: const EdgeInsets.all(8.0),
+                elevation: 5.0,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                  side: BorderSide( color: AppColors.black, width: 2.0),
                 ),
-                side: BorderSide( color: AppColors.black, width: 2.0),
+                child: TableCalendar(
+                  headerStyle: headerStyle(),
+                  daysOfWeekStyle: const DaysOfWeekStyle(
+                    weekendStyle: TextStyle(color: AppColors.error500)
+                  ),
+                  daysOfWeekHeight: 40.0,
+                  rowHeight: 60.0,
+                  firstDay: kFirstDay,
+                  lastDay: kLastDay,
+                  focusedDay: _focusedDay,
+                  selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+                  rangeStartDay: _rangeStart,
+                  rangeEndDay: _rangeEnd,
+                  calendarFormat: _calendarFormat,
+                  eventLoader: _listOfDayEvents,
+                  rangeSelectionMode: _rangeSelectionMode,
+                  startingDayOfWeek: StartingDayOfWeek.monday,
+                  calendarStyle: const CalendarStyle(
+                    // Use `CalendarStyle` to customize the UI
+                    outsideDaysVisible: false,
+                    weekendTextStyle: TextStyle(color: AppColors.error500),
+                  ),
+                  onDaySelected: (selectedDay, focusedDay) {
+                    if (!isSameDay(_selectedDay, selectedDay)) {
+                      // Call `setState()` when updating the selected day
+                      setState(() {
+                        _selectedDay = selectedDay;
+                        _focusedDay = focusedDay;
+                      });
+                    }
+                  },
+                  onFormatChanged: (format) {
+                    if (_calendarFormat != format) {
+                      // Call `setState()` when updating calendar format
+                      setState(() {
+                        _calendarFormat = format;
+                      });
+                    }
+                  },
+                  onPageChanged: (focusedDay) {
+                    _focusedDay = focusedDay;
+                  },
+                ),
               ),
-              child: TableCalendar(
-                headerStyle: headerStyle(),
-                daysOfWeekStyle: const DaysOfWeekStyle(
-                  weekendStyle: TextStyle(color: AppColors.error500)
+              ..._listOfDayEvents(_selectedDay!).map(
+                    (myEvents) => ListTile(
+                  leading: const Icon(
+                    Icons.done,
+                    color: Colors.teal,
+                  ),
+                  title: Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Text('Tiêu đề:   ${myEvents['eventTitle']}'),
+                  ),
+                  subtitle: Text('Nội dung:   ${myEvents['eventDescp']}'),
                 ),
-                daysOfWeekHeight: 40.0,
-                rowHeight: 60.0,
-                firstDay: kFirstDay,
-                lastDay: kLastDay,
-                focusedDay: _focusedDay,
-                selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-                rangeStartDay: _rangeStart,
-                rangeEndDay: _rangeEnd,
-                calendarFormat: _calendarFormat,
-                eventLoader: _listOfDayEvents,
-                rangeSelectionMode: _rangeSelectionMode,
-                startingDayOfWeek: StartingDayOfWeek.monday,
-                calendarStyle: const CalendarStyle(
-                  // Use `CalendarStyle` to customize the UI
-                  outsideDaysVisible: false,
-                  weekendTextStyle: TextStyle(color: AppColors.error500),
-                ),
-                onDaySelected: (selectedDay, focusedDay) {
-                  if (!isSameDay(_selectedDay, selectedDay)) {
-                    // Call `setState()` when updating the selected day
-                    setState(() {
-                      _selectedDay = selectedDay;
-                      _focusedDay = focusedDay;
-                    });
-                  }
-                },
-                onFormatChanged: (format) {
-                  if (_calendarFormat != format) {
-                    // Call `setState()` when updating calendar format
-                    setState(() {
-                      _calendarFormat = format;
-                    });
-                  }
-                },
-                onPageChanged: (focusedDay) {
-                  _focusedDay = focusedDay;
-                },
               ),
-            ),
-            ..._listOfDayEvents(_selectedDay!).map(
-                  (myEvents) => ListTile(
-                leading: const Icon(
-                  Icons.done,
-                  color: Colors.teal,
-                ),
-                title: Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Text('Tiêu đề:   ${myEvents['eventTitle']}'),
-                ),
-                subtitle: Text('Nội dung:   ${myEvents['eventDescp']}'),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
@@ -263,6 +259,29 @@ class _MedicalHistoryState extends State<MedicalHistory> {
         Icons.chevron_right,
         color: AppColors.black,
         size: 28,
+      ),
+    );
+  }
+
+  Widget buildTextField(
+      {String? hint, required TextEditingController controller}) {
+    return TextField(
+      controller: controller,
+      textCapitalization: TextCapitalization.words,
+      decoration: InputDecoration(
+        labelText: hint ?? '',
+        focusedBorder: OutlineInputBorder(
+          borderSide:const BorderSide(color: AppColors.error50, width: 1.5),
+          borderRadius: BorderRadius.circular(
+            10.0,
+          ),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: AppColors.error50, width: 1.5),
+          borderRadius: BorderRadius.circular(
+            10.0,
+          ),
+        ),
       ),
     );
   }

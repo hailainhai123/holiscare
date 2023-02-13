@@ -4,7 +4,7 @@ import 'package:holiscare/constant/routes.dart';
 import 'package:holiscare/utils/colors.dart';
 import 'package:holiscare/widget_custom/app_bar.dart';
 
-import '../utils/global_controller.dart';
+import '../../utils/global_controller.dart';
 
 class NurseRoomStudent extends StatelessWidget {
   NurseRoomStudent({Key? key}) : super(key: key);

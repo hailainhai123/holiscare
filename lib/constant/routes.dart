@@ -9,7 +9,6 @@ import 'package:holiscare/modules/home/widget/medical_history.dart';
 import 'package:holiscare/modules/user/pages/profile_page.dart';
 import 'package:holiscare/modules/user/user_page.dart';
 import 'package:holiscare/modules/web_health/web_health.dart';
-import 'package:holiscare/nurse_room/nurse_room_student.dart';
 import 'package:holiscare/widget_custom/comming_soon_page.dart';
 
 import '../binding/app_binding.dart';
@@ -20,6 +19,7 @@ import '../modules/human_body/human_page.dart';
 import '../modules/home/home_page.dart';
 import '../modules/login/login_page.dart';
 import '../modules/data/data_page.dart';
+import '../modules/nurse_room/nurse_room_student.dart';
 import '../modules/splash/splash.dart';
 
 const kSplash = "/splash";
