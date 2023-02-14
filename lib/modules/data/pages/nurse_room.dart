@@ -124,16 +124,16 @@ class _NurseRoomState extends State<NurseRoom> {
                         );
                       },
                       itemBuilder: (context, index) {
-                        var student = controller.listRequest.value[index];
+                        var request = controller.listRequest.value[index];
                         return InkWell(
                           onTap: () {
                             Get.offAndToNamed(kDetailRequest,
                               parameters: {
-                                'id': '${student.id!}',
-                                'name': student.name!,
-                                'teacher': student.teacher!,
-                                'reason': student.reason!,
-                                'time': student.time!,
+                                'id': '${request.id!}',
+                                'name': request.name!,
+                                'teacher': request.teacher!,
+                                'reason': request.reason!,
+                                'time': request.time!,
                               },);
                             // Get.toNamed(
                             //   kDetailRequest,
@@ -146,7 +146,7 @@ class _NurseRoomState extends State<NurseRoom> {
                             //   },
                             // );
                           },
-                          child: itemRequest(student),
+                          child: itemRequest(request),
                         );
                       },
                     ),

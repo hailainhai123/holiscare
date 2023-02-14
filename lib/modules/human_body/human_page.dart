@@ -52,10 +52,10 @@ class _Human3DPageState extends State<Human3DPage> {
                 child: Container(
                   height: 70,
                   width: 70,
-                  color: Colors.black,
+                  color: Colors.transparent,
                   child: const Center(
                       child: Text(
-                    'Đầu',
+                    '',
                     style: TextStyle(fontSize: 20, color: Colors.red),
                   )),
                 ),
@@ -71,10 +71,10 @@ class _Human3DPageState extends State<Human3DPage> {
                 child: Container(
                   height: 70,
                   width: 120,
-                  color: Colors.black,
+                  color: Colors.transparent,
                   child: const Center(
                       child: Text(
-                    'Ngực',
+                    '',
                     style: TextStyle(fontSize: 20, color: Colors.red),
                   )),
                 ),
@@ -90,10 +90,10 @@ class _Human3DPageState extends State<Human3DPage> {
                 child: Container(
                   height: 70,
                   width: 120,
-                  color: Colors.black,
+                  color: Colors.transparent,
                   child: const Center(
                       child: Text(
-                    'Bụng',
+                    '',
                     style: TextStyle(fontSize: 20, color: Colors.red),
                   )),
                 ),
@@ -109,10 +109,10 @@ class _Human3DPageState extends State<Human3DPage> {
                 child: Container(
                   height: 70,
                   width: 70,
-                  color: Colors.black,
+                  color: Colors.transparent,
                   child: const Center(
                       child: Text(
-                    'Tay trái',
+                    '',
                     style: TextStyle(fontSize: 20, color: Colors.red),
                   )),
                 ),
@@ -128,10 +128,10 @@ class _Human3DPageState extends State<Human3DPage> {
                 child: Container(
                   height: 70,
                   width: 70,
-                  color: Colors.black,
+                  color: Colors.transparent,
                   child: const Center(
                       child: Text(
-                    'Tay phải',
+                    '',
                     style: TextStyle(fontSize: 20, color: Colors.red),
                   )),
                 ),
@@ -147,10 +147,10 @@ class _Human3DPageState extends State<Human3DPage> {
                 child: Container(
                   height: 70,
                   width: 70,
-                  color: Colors.black,
+                  color: Colors.transparent,
                   child: const Center(
                       child: Text(
-                        'Chân trái',
+                        '',
                         style: TextStyle(fontSize: 20, color: Colors.red),
                       )),
                 ),
@@ -166,10 +166,10 @@ class _Human3DPageState extends State<Human3DPage> {
                 child: Container(
                   height: 70,
                   width: 70,
-                  color: Colors.black,
+                  color: Colors.transparent,
                   child: const Center(
                       child: Text(
-                        'Chân phải',
+                        '',
                         style: TextStyle(fontSize: 20, color: Colors.red),
                       )),
                 ),

@@ -1,4 +1,4 @@
-package com.example.holiscare
+package com.onenet.holiscare
 
 import io.flutter.embedding.android.FlutterActivity
 
