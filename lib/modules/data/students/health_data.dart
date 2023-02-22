@@ -98,7 +98,7 @@ class HealthData extends StatelessWidget {
                         Get.toNamed(kHealthRecord);
                       }
                       if (index == 1) {
-                        Get.toNamed(kNurseRoomStudent);
+                        Get.toNamed(kMedicalHistory);
                       }
                     },
                     child: itemClass(title[index], image[index], color[index]),

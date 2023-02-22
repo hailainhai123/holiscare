@@ -41,9 +41,11 @@ class DetailClassroom extends GetView<HomeController> {
                   children: [
                     // const Spacer(),
                     InkWell(
-                      onTap: (){
+                      onTap: () async {
+                        var idStudent = int.parse(controller.index.value);
+                        await controller.getMedicalRecord(idStudent);
                         Get.toNamed(kHealthRecord);
-                      },
+                        },
                       child: itemClass(
                         'Dữ liệu sức khoẻ',
                         "assets/images/du_lieu_sk.png",
@@ -58,7 +60,7 @@ class DetailClassroom extends GetView<HomeController> {
                         Get.toNamed(kMedicalHistory);
                       },
                       child: itemClass(
-                        'Lịch sử sức khoẻ',
+                        'Lịch sử yêu cầu đi y tế',
                         "assets/images/record.png",
                         () {},
                       ),

@@ -43,27 +43,27 @@ class _LoginPageState extends State<LoginPage> {
   Widget _emailPasswordWidget() {
     return Column(
       children: <Widget>[
-        AppInput(
-          controller: _classController,
-          validator: (classManage) {
-            if (classManage == null || classManage.trim().isEmpty) {
-              return '';
-            }
-            return null;
-          },
-          // autofocus: true,
-          enabled: true,
-          hintText: 'Lớp',
-          iconLeft: IconEnums.home,
-          onTapIconRight: () async {
-            _classController.clear();
-          },
-          enableInteractiveSelection: false,
-          iconRight: IconEnums.close,
-        ),
-        const SizedBox(
-          height: 16.0,
-        ),
+        // AppInput(
+        //   controller: _classController,
+        //   validator: (classManage) {
+        //     if (classManage == null || classManage.trim().isEmpty) {
+        //       return '';
+        //     }
+        //     return null;
+        //   },
+        //   // autofocus: true,
+        //   enabled: true,
+        //   hintText: 'Lớp',
+        //   iconLeft: IconEnums.home,
+        //   onTapIconRight: () async {
+        //     _classController.clear();
+        //   },
+        //   enableInteractiveSelection: false,
+        //   iconRight: IconEnums.close,
+        // ),
+        // const SizedBox(
+        //   height: 16.0,
+        // ),
         AppInput(
           controller: _emailController,
           validator: (phoneNumber) {
@@ -108,6 +108,7 @@ class _LoginPageState extends State<LoginPage> {
   ) {
     return InkWell(
       onTap: () async {
+        _classController.text = "10ab4";
         if (globalController.isTeacher.value) {
           if (_classController.text.trim().toUpperCase() == '10AB4' &&
               _emailController.text.toUpperCase().trim() == 'ADMIN' &&

@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:holiscare/model/detail_record_model.dart';
+import 'package:holiscare/model/medical_record_model.dart';
+import 'package:holiscare/model/student_model.dart';
 import 'package:holiscare/model/user_model.dart';
 import '../../api/api_dio_controller.dart';
 import '../bottom_app_bar/navigation_controller.dart';
@@ -13,19 +16,15 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   late TabController tabController;
   int currentIndex = 0;
   late Timer timer;
-  var listIdStation = <String>[].obs;
-
-  var listIdDevice = <String>[].obs;
-  var idStation = ''.obs;
-  var idDevice = ''.obs;
-  var nameDevice = ''.obs;
-  var nameStation = ''.obs;
   var color = Colors.black.obs;
   var userModel = UserModel().obs;
-  var isOzone = true.obs;
   var title = ''.obs;
   var index = ''.obs;
-
+  var idRecord = ''.obs;
+  var listRecord = <MedicalRecordModel>[].obs;
+  var listStudent = <StudentModel>[].obs;
+  var detailRecord = DetailRecordModel().obs;
+  var chiSoBMI = ''.obs;
 
   @override
   void onInit() {
@@ -70,7 +69,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
   Future<void> initData() async {
     tabController = TabController(length: 4, vsync: this);
-    // await getListStation();
+    await getStudent();
     // await getListDeviceForIdStation(idStation.value);
   }
 
@@ -87,6 +86,38 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   calculateBgHeight() {
     bgHeight.value =
         (kBgHeight - scrollController.offset).clamp(0.0, kBgHeight);
+  }
+
+  Future<void> getStudent() async {
+    listStudent.clear();
+    try {
+      var list = await ApiDioController.getStudent();
+      listStudent.addAll(list);
+      print('${listStudent.length}');
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> getMedicalRecord(int idStudent) async {
+    listRecord.clear();
+    try {
+      var list = await ApiDioController.getRecord(idStudent);
+      listRecord.addAll(list);
+      print('haiabc ${listRecord.length}');
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> getDetailRecord(int idRecord) async {
+    try {
+      var detailRecordResponse = await ApiDioController.getDetailRecord(idRecord);
+      detailRecord.value = detailRecordResponse;
+      print('haiabc ${detailRecord.value.studentName}');
+    } catch (e) {
+      print(e);
+    }
   }
 
 }

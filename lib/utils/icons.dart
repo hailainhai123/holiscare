@@ -11,4 +11,6 @@ class IconEnums {
   static const String map = 'assets/icons/map.svg';
   static const String services = 'assets/icons/services.svg';
   static const String yellowArrow = 'assets/icons/icon_yellow_arrow.svg';
+  static const String calendar = 'assets/icons/calendar.svg';
+
 }

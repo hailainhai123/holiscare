@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
+
 final double defaultZoom = 10.8746;
 final double newZoom = 15.8746;
 
@@ -138,3 +140,26 @@ class Constants {
 
   static const List<String> listPasswordStudent = ['123456'];
 }
+
+class DateTimeFormatPattern {
+  static const String dateFlowServer = 'yyyy-MM-dd';
+  static const String mmyy = 'MM/YY';
+  static const String mmyyyyy = 'MM/yyyy';
+  static const String dd = 'dd';
+  static const String formatDefault = 'dd-MM-yyyy HH:mm:ss';
+  static const String formatddMMyyyy = 'dd-MM-yyyy';
+  static const String formatyyyyMMdd = 'yyyy-MM-dd';
+  static const String dobddMMyyyy = 'dd/MM/yyyy';
+  static const String formatddMM = 'dd/MM';
+  static const String formatHHmm = 'HH:mm';
+  static const String commonDateFormat = "dd/MMM/yyyy";
+  static const String dateFormatPayment = "HH:mm 'ngày' MM/dd";
+  static const String hh_mm_NGAY_dd_MM = "HH:mm 'ngày' dd/MM";
+  static const String hh_mm_NGAY_dd_MM_yyyy = "HH:mm 'ngày' dd/MM/yyyy";
+  static const String backendTimeFormat = "dd/MM/yyyy HH:mm";
+
+  static DateTime startOfDay(DateTime date) {
+    return (DateTime(date.year, date.month, date.day));
+  }
+}
+

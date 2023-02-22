@@ -1,4 +1,7 @@
 class ApiURL {
+  static const String getStudent = "/api/student";
+  static const String getRecord = "/api/medical-record";
+  static const String getDetailRecord = "/api/medical-record/";
   static const String getRequest = "/api/TodoItems";
   static const String getDeviceForIdStation = "/getdevicetram";
 

@@ -8,7 +8,10 @@ import 'package:intl/intl.dart';
 import 'package:holiscare/widget_custom/app_bar.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../../constant/routes.dart';
+import '../../../model/health_request.dart';
 import '../../../utils/global_controller.dart';
+import '../../data/data_controller.dart';
 
 class MedicalHistory extends StatefulWidget {
   @override
@@ -20,6 +23,7 @@ class _MedicalHistoryState extends State<MedicalHistory> {
   final RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
       .toggledOff; // Can be toggled on/off by longpressing a date
   final GlobalController globalController = Get.find();
+  final DataController controller = Get.find();
 
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
@@ -34,7 +38,6 @@ class _MedicalHistoryState extends State<MedicalHistory> {
   @override
   void initState() {
     super.initState();
-
     _selectedDay = _focusedDay;
     loadPreviousEvents();
   }
@@ -78,8 +81,7 @@ class _MedicalHistoryState extends State<MedicalHistory> {
             const SizedBox(
               height: 20.0,
             ),
-            buildTextField(
-                controller: descpController, hint: 'Nội dung'),
+            buildTextField(controller: descpController, hint: 'Nội dung'),
           ],
         ),
         actions: [
@@ -106,17 +108,17 @@ class _MedicalHistoryState extends State<MedicalHistory> {
 
                 setState(() {
                   if (mySelectedEvents[
-                  DateFormat('yyyy-MM-dd').format(_selectedDay!)] !=
+                          DateFormat('yyyy-MM-dd').format(_selectedDay!)] !=
                       null) {
                     mySelectedEvents[
-                    DateFormat('yyyy-MM-dd').format(_selectedDay!)]
+                            DateFormat('yyyy-MM-dd').format(_selectedDay!)]
                         ?.add({
                       "eventTitle": titleController.text,
                       "eventDescp": descpController.text,
                     });
                   } else {
                     mySelectedEvents[
-                    DateFormat('yyyy-MM-dd').format(_selectedDay!)] = [
+                        DateFormat('yyyy-MM-dd').format(_selectedDay!)] = [
                       {
                         "eventTitle": titleController.text,
                         "eventDescp": descpController.text,
@@ -147,109 +149,59 @@ class _MedicalHistoryState extends State<MedicalHistory> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: 'Lịch sử sức khoẻ',
+        title: 'Lịch sử yêu cầu đi y tế',
         isBack: true,
         backgroundColor: globalController.colorBackground.value,
       ),
       body: Container(
+        width: Get.width,
         height: Get.height,
         color: globalController.colorBackground.value,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Card(
-                margin: const EdgeInsets.all(8.0),
-                elevation: 5.0,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10),
-                  ),
-                  side: BorderSide( color: AppColors.black, width: 2.0),
-                ),
-                child: TableCalendar(
-                  headerStyle: headerStyle(),
-                  daysOfWeekStyle: const DaysOfWeekStyle(
-                    weekendStyle: TextStyle(color: AppColors.error500)
-                  ),
-                  daysOfWeekHeight: 40.0,
-                  rowHeight: 60.0,
-                  firstDay: kFirstDay,
-                  lastDay: kLastDay,
-                  focusedDay: _focusedDay,
-                  selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-                  rangeStartDay: _rangeStart,
-                  rangeEndDay: _rangeEnd,
-                  calendarFormat: _calendarFormat,
-                  eventLoader: _listOfDayEvents,
-                  rangeSelectionMode: _rangeSelectionMode,
-                  startingDayOfWeek: StartingDayOfWeek.monday,
-                  calendarStyle: const CalendarStyle(
-                    // Use `CalendarStyle` to customize the UI
-                    outsideDaysVisible: false,
-                    weekendTextStyle: TextStyle(color: AppColors.error500),
-                  ),
-                  onDaySelected: (selectedDay, focusedDay) {
-                    if (!isSameDay(_selectedDay, selectedDay)) {
-                      // Call `setState()` when updating the selected day
-                      setState(() {
-                        _selectedDay = selectedDay;
-                        _focusedDay = focusedDay;
-                      });
-                    }
-                  },
-                  onFormatChanged: (format) {
-                    if (_calendarFormat != format) {
-                      // Call `setState()` when updating calendar format
-                      setState(() {
-                        _calendarFormat = format;
-                      });
-                    }
-                  },
-                  onPageChanged: (focusedDay) {
-                    _focusedDay = focusedDay;
-                  },
-                ),
-              ),
-              ..._listOfDayEvents(_selectedDay!).map(
-                    (myEvents) => ListTile(
-                  leading: const Icon(
-                    Icons.done,
-                    color: Colors.teal,
-                  ),
-                  title: Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: Text('Tiêu đề:   ${myEvents['eventTitle']}'),
-                  ),
-                  subtitle: Text('Nội dung:   ${myEvents['eventDescp']}'),
-                ),
-              ),
-            ],
-          ),
-        ),
+        padding: const EdgeInsets.all(16),
+        child: controller.listRequest.isNotEmpty
+            ? ListView.separated(
+                itemCount: controller.listRequest.length,
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: const EdgeInsets.only(top: 8),
+                separatorBuilder: (_, index) {
+                  return const Divider(
+                    color: AppColors.lightSilver,
+                  );
+                },
+                itemBuilder: (context, index) {
+                  var request = controller.listRequest.value[index];
+                  return InkWell(
+                    onTap: () {},
+                    child: itemRequest(request),
+                  );
+                },
+              )
+            : Text('Không có yêu cầu của học sinh nào.'),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _showAddEventDialog(),
-        label: const Text('Thêm sự kiện'),
+      floatingActionButton: globalController.isTeacher.value ? null : FloatingActionButton.extended(
+        onPressed: () {
+          Get.toNamed(kDetailRequest);
+        },
+        label: const Text('Thêm yêu cầu'),
       ),
     );
   }
 
   headerStyle() {
     return HeaderStyle(
-      titleTextStyle:
-      const TextStyle(color: AppColors.black, fontSize: 20.0),
+      titleTextStyle: const TextStyle(color: AppColors.black, fontSize: 20.0),
       decoration: BoxDecoration(
           color: globalController.colorBackground500.value,
           borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(10),
-              topRight: Radius.circular(10))),
+              topLeft: Radius.circular(10), topRight: Radius.circular(10))),
       formatButtonTextStyle:
-      const TextStyle(color: AppColors.black, fontSize: 16.0),
+          const TextStyle(color: AppColors.black, fontSize: 16.0),
       formatButtonDecoration: const BoxDecoration(
         color: AppColors.error50,
         borderRadius: BorderRadius.all(
           Radius.circular(5.0),
-        ), ),
+        ),
+      ),
       leftChevronIcon: const Icon(
         Icons.chevron_left,
         color: AppColors.black,
@@ -271,7 +223,7 @@ class _MedicalHistoryState extends State<MedicalHistory> {
       decoration: InputDecoration(
         labelText: hint ?? '',
         focusedBorder: OutlineInputBorder(
-          borderSide:const BorderSide(color: AppColors.error50, width: 1.5),
+          borderSide: const BorderSide(color: AppColors.error50, width: 1.5),
           borderRadius: BorderRadius.circular(
             10.0,
           ),
@@ -283,6 +235,27 @@ class _MedicalHistoryState extends State<MedicalHistory> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget itemRequest(HealthRequestModel student) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('HS ${student.name!.toUpperCase()}'),
+            const Icon(
+              Icons.chevron_right,
+              color: AppColors.black,
+            )
+          ],
+        ),
+        const Divider(
+          color: Colors.black,
+        ),
+      ],
     );
   }
 }

@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:holiscare/constant/routes.dart';
+import 'package:holiscare/model/student_model.dart';
 import 'package:holiscare/utils/global_controller.dart';
 import '../../utils/colors.dart';
 import '../../widget_custom/app_bar.dart';
@@ -52,29 +54,33 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(
                 height: 8.0,
               ),
-              Expanded(
-                child: GridView.count(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 16.0,
-                  mainAxisSpacing: 16.0,
-                  childAspectRatio: 0.7,
-                  children: List.generate(choices.length, (index) {
-                    return InkWell(
-                      onTap: () {
-                        Get.toNamed(kDetailClassroomPage, parameters: {
-                          'title': choices[index].title,
-                          'index': '$index',
-                        });
-                      },
-                      child: Center(
-                        child: SelectCard(
-                          choice: choices[index],
+              Obx(() {
+                return Expanded(
+                  child: GridView.count(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 16.0,
+                    mainAxisSpacing: 16.0,
+                    childAspectRatio: 0.7,
+                    children:
+                        List.generate(controller.listStudent.length, (index) {
+                      var student = controller.listStudent[index];
+                      return InkWell(
+                        onTap: () {
+                          Get.toNamed(kDetailClassroomPage, parameters: {
+                            'title': student.name!,
+                            'index': '${student.id!}',
+                          });
+                        },
+                        child: Center(
+                          child: SelectCard(
+                            student: student,
+                          ),
                         ),
-                      ),
-                    );
-                  }),
-                ),
-              ),
+                      );
+                    }),
+                  ),
+                );
+              }),
             ],
           ),
         ));
@@ -93,7 +99,8 @@ const List<Choice> choices = <Choice>[
   Choice(title: 'Phan Hà Anh', image: 'assets/students/p.h.anh.jpeg'),
   Choice(title: 'PHẠM TRÂM ANH', image: 'assets/students/p.t.anh.jpeg'),
   Choice(title: 'HÀ VIỆT LINH', image: 'assets/students/h.v.linh.jpeg'),
-  Choice(title: 'Nguyễn ngọc trường phúc', image: 'assets/students/l.t.minh.jpeg'),
+  Choice(
+      title: 'Nguyễn ngọc trường phúc', image: 'assets/students/l.t.minh.jpeg'),
   Choice(title: 'Nguyễn Hoàng Bảo Anh', image: 'assets/students/l.q.tram.jpeg'),
   Choice(title: 'Đỗ Cao Bảo Châu', image: 'assets/students/d.c.b.chau.jpeg'),
   Choice(title: 'Đỗ Bảo Châu', image: 'assets/students/d.b.chau.jpeg'),
@@ -117,9 +124,9 @@ const List<Choice> choices = <Choice>[
 ];
 
 class SelectCard extends StatelessWidget {
-  final Choice choice;
+  final StudentModel student;
 
-  const SelectCard({super.key, required this.choice});
+  const SelectCard({super.key, required this.student});
 
   @override
   Widget build(BuildContext context) {
@@ -129,16 +136,33 @@ class SelectCard extends StatelessWidget {
           Expanded(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(16.0),
-              child: Image.asset(
-                choice.image,
-                fit: BoxFit.fill,
+              // child: Image.asset(
+              //   student.avatarUrl ?? "",
+              //   fit: BoxFit.fill,
+              //   width: Get.width / 3 - 20,
+              // ),
+              child: CachedNetworkImage(
                 width: Get.width / 3 - 20,
+                imageUrl: student.avatarUrl ?? '',
+                placeholder: (context, url) => const SizedBox(
+                  height: 40,
+                  width: 40,
+                  child: Center(
+                      child: CircularProgressIndicator(
+                    value: 10,
+                    strokeWidth: 2.0,
+                  )),
+                ),
+                errorWidget: (context, url, error) =>
+                    Image.asset('assets/images/avatar_default.png'),
               ),
             ),
           ),
-          const SizedBox(height: 4.0,),
+          const SizedBox(
+            height: 4.0,
+          ),
           Text(
-            choice.title.toUpperCase(),
+            student.name!.toUpperCase(),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,

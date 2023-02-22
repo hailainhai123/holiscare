@@ -1,12 +1,16 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:get/get.dart';
 import 'package:holiscare/constant/routes.dart';
 import 'package:holiscare/utils/colors.dart';
 import 'package:holiscare/widget_custom/app_bar.dart';
 import 'package:holiscare/widget_custom/app_button.dart';
 
+import '../../../constant/constants.dart';
 import '../../../utils/global_controller.dart';
 import '../../../utils/icons.dart';
+import '../../../utils/time_util.dart';
 import '../../../widget_custom/app_input.dart';
 import '../data_controller.dart';
 
@@ -23,6 +27,12 @@ class _DetailRequestState extends State<DetailRequest> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController reasonController = TextEditingController();
   final TextEditingController timeController = TextEditingController();
+
+  final List<String> genderItems = [
+    'Chu Thị Hương',
+    'Nguyễn Văn Bắc',
+  ];
+  String? selectedValue;
 
   @override
   void dispose() {
@@ -82,14 +92,14 @@ class _DetailRequestState extends State<DetailRequest> {
               if (globalController.isTeacher.value)
                 Text(
                   'HS ${controller.name.value}',
-                  style:
-                      const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.bold),
                 )
               else
                 Text(
                   'HS ${globalController.nameStudent.value}',
-                  style:
-                      const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.bold),
                 ),
               const SizedBox(
                 height: 16,
@@ -105,22 +115,64 @@ class _DetailRequestState extends State<DetailRequest> {
                       style: const TextStyle(
                           fontSize: 16, fontWeight: FontWeight.bold),
                     )
-                  : AppInput(
-                      controller: nameController,
-                      validator: (classManage) {
-                        if (classManage == null || classManage.trim().isEmpty) {
-                          return '';
+                  : DropdownButtonFormField2(
+                      decoration: const InputDecoration(
+                        isDense: true,
+                        fillColor: Colors.white,
+                        border: InputBorder.none,
+                        filled: true,
+                        enabledBorder:
+                        OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(
+                                    ViewConstants.defaultBorderRadiusBtn),
+                              ),
+                              borderSide: BorderSide(color: AppColors.lightSilver),
+                            ),
+                        contentPadding: EdgeInsets.zero,
+                      ),
+                      isExpanded: true,
+                      hint: const Text(
+                        'Chọn giáo viên',
+                      ),
+                      icon: const Icon(
+                        Icons.arrow_drop_down,
+                        color: Colors.black45,
+                      ),
+                      iconSize: 30,
+                      buttonHeight: 48,
+                      // buttonPadding: const EdgeInsets.only(left: 20, right: 10),
+                      dropdownDecoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      items: genderItems
+                          .map((item) => DropdownMenuItem<String>(
+                                value: item,
+                                child: Text(
+                                  item,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ))
+                          .toList(),
+                      validator: (value) {
+                        if (value == null) {
+                          return 'Chọn giáo viên.';
                         }
-                        return null;
                       },
-                      // autofocus: true,
-                      enabled: true,
-                      hintText: 'Giáo viên',
-                      onTapIconRight: () async {
-                        nameController.clear();
+                      onChanged: (value) {
+                        //Do something when changing the item if you want.
+                        print('1');
+                        setState(() {
+                          selectedValue = value.toString();
+                        });
+                        print('$selectedValue');
                       },
-                      enableInteractiveSelection: false,
-                      iconRight: IconEnums.close,
+                      onSaved: (value) {
+                        // selectedValue = value.toString();
+                        // print('$selectedValue');
+                      },
                     ),
               const SizedBox(
                 height: 16,
@@ -231,10 +283,23 @@ class _DetailRequestState extends State<DetailRequest> {
                       enabled: true,
                       hintText: 'Thời gian đi',
                       onTapIconRight: () async {
-                        timeController.clear();
-                      },
+                        print('1');
+                        DatePicker.showDateTimePicker(context,
+                            showTitleActions: true,
+                            minTime: DateTime.now(),
+                            maxTime: DateTime(2024, 5, 5, 20, 50),
+                            onChanged: (date) {
+                              print('change $date in time zone ' +
+                                  date.timeZoneOffset.inHours.toString());
+                            }, onConfirm: (date) {
+                              print('confirm $date');
+                              setState(() {
+                                timeController.text = TimeUtil.format(date, TimeUtil.DDMMYYYYHHMM);
+                              });
+                            }, locale: LocaleType.en);                      },
                       enableInteractiveSelection: false,
-                      iconRight: IconEnums.close,
+                      iconRight: IconEnums.calendar,
+                colorRightIcon: AppColors.backgroundButton,
                     ),
               const SizedBox(
                 height: 16,
@@ -247,7 +312,8 @@ class _DetailRequestState extends State<DetailRequest> {
                           child: AppButton(
                               title: 'Đồng ý',
                               onPressed: () async {
-                                await controller.deleteRequest(controller.id.value);
+                                await controller
+                                    .deleteRequest(controller.id.value);
                                 Get.offAndToNamed(kNurseRoom);
                                 Get.snackbar('Thông báo', 'Đã cho phép',
                                     snackPosition: SnackPosition.TOP);
@@ -258,7 +324,8 @@ class _DetailRequestState extends State<DetailRequest> {
                           child: AppButton(
                               title: 'Từ chối',
                               onPressed: () async {
-                                await controller.deleteRequest(controller.id.value);
+                                await controller
+                                    .deleteRequest(controller.id.value);
                                 Get.offAndToNamed(kNurseRoom);
                                 Get.snackbar('Thông báo', 'Không cho phép',
                                     snackPosition: SnackPosition.TOP);
