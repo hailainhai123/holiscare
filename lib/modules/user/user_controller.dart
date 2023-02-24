@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
+import 'package:holiscare/model/detail_account.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../api/api_dio_controller.dart';
@@ -13,6 +14,7 @@ class UserController extends GetxController {
   var lop = '';
   var gioiTinh = '';
   var light = false.obs;
+  var detailAccount = DetailAccount().obs;
 
   @override
   void onInit() async {
@@ -27,5 +29,15 @@ class UserController extends GetxController {
     userName = UserModel.fromJson(userMap).taiKhoan ?? '';
     lop = UserModel.fromJson(userMap).lop ?? '';
     gioiTinh = UserModel.fromJson(userMap).gioiTinh ?? '';
+  }
+
+  Future<void> getDetailAccount() async {
+    try {
+      var response = await ApiDioController.getDetailAccount();
+      detailAccount.value = response;
+      print('haiabc ${detailAccount.value.fullName}');
+    } catch (e) {
+      print(e);
+    }
   }
 }

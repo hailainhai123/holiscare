@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:holiscare/constant/routes.dart';
+import 'package:holiscare/modules/data/data_controller.dart';
+import 'package:holiscare/modules/home/home_controller.dart';
 import 'package:holiscare/utils/colors.dart';
 import 'package:holiscare/widget_custom/app_bar.dart';
 
 import '../../../utils/global_controller.dart';
 
-class HealthData extends StatelessWidget {
+class HealthData extends GetView<HomeController> {
   HealthData({Key? key}) : super(key: key);
   final GlobalController globalController = Get.find();
+  final DataController dataController = Get.find();
 
   static const List<String> title = <String>[
     'Dữ liệu sức khoẻ',
@@ -93,11 +96,22 @@ class HealthData extends StatelessWidget {
                 mainAxisSpacing: 40.0,
                 children: List.generate(2, (index) {
                   return InkWell(
-                    onTap: () {
+                    onTap: () async {
                       if (index == 0) {
+                        await controller.getMedicalRecord(globalController.idStudent.value);
                         Get.toNamed(kHealthRecord);
                       }
                       if (index == 1) {
+                        for (var element in controller.listStudent) {
+                          if (globalController.idStudent.value == element.id) {
+                            globalController.nameStudent.value = element.name!;
+                          }
+                        }
+                        if (globalController.isTeacher.value) {
+
+                        } else {
+                          await dataController.getListRequest(studentId: globalController.idStudent.value);
+                        }
                         Get.toNamed(kMedicalHistory);
                       }
                     },

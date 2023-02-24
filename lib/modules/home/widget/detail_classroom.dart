@@ -6,10 +6,12 @@ import 'package:holiscare/modules/home/home_controller.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/global_controller.dart';
 import '../../../widget_custom/app_bar.dart';
+import '../../data/data_controller.dart';
 
 class DetailClassroom extends GetView<HomeController> {
   DetailClassroom({Key? key}) : super(key: key);
   final GlobalController globalController = Get.find();
+  final DataController dataController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +58,9 @@ class DetailClassroom extends GetView<HomeController> {
                       color: AppColors.black,
                     ),
                     InkWell(
-                      onTap: (){
+                      onTap: () async {
+                        var idStudent = int.parse(controller.index.value);
+                        await dataController.getListRequest(studentId: idStudent);
                         Get.toNamed(kMedicalHistory);
                       },
                       child: itemClass(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:holiscare/api/api_dio_controller.dart';
 import 'package:holiscare/constant/routes.dart';
+import 'package:holiscare/model/token_model.dart';
 import 'package:holiscare/model/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,6 +18,8 @@ class LoginController extends GetxController {
   var loading = false.obs;
   var name = ''.obs;
   var sex = ''.obs;
+  var authen = AuthenticationResult().obs;
+
 
   @override
   void onInit() async {
@@ -49,5 +52,19 @@ class LoginController extends GetxController {
       }
     }
     return name.value;
+  }
+
+  Future<void> onLogin(String email, String password, String fireBaseToken, String deviceId) async {
+    try {
+      var loginResponse = await ApiDioController.postLogin(email, password, fireBaseToken, deviceId);
+      authen.value = loginResponse;
+      globalController.tokenType.value = authen.value.tokenType!;
+      globalController.token.value = authen.value.token!;
+      if (authen.value.bundle!.attributes!.isNotEmpty) {
+        globalController.idStudent.value = authen.value.bundle!.attributes![0].value ?? 0;
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 }

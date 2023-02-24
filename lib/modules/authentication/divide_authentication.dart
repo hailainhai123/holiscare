@@ -137,9 +137,9 @@ class _DivideAuthState extends State<DivideAuth> {
                     title: 'Tiếp tục',
                     onPressed: () {
                       if (!checkColor1) {
-                        globalController.isTeacher.value = false;
+                        globalController.role.value = 'STUDENT';
                       } else {
-                        globalController.isTeacher.value = true;
+                        globalController.role.value = 'TEACHER';
                       }
                       if (checkColor1 != checkColor2) {
                         Get.toNamed(kLoginPage);

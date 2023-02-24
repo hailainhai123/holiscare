@@ -28,12 +28,14 @@ class DataPage extends GetView<DataController> {
             // const Spacer(),
             InkWell(
               onTap: () async {
+                await controller.getListRequest(teacherId: globalController.idStudent.value);
                 Get.toNamed(kNurseRoom);
               },
               child: itemClass(
                 'Phòng y tế',
                 "assets/images/nurse_room.png",
-                    () {},
+                    () {
+                    },
               ),
             ),
             const Divider(

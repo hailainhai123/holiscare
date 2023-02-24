@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:holiscare/modules/data/pages/detail_request.dart';
 import 'package:holiscare/modules/data/pages/nurse_room.dart';
+import 'package:holiscare/modules/data/pages/request_student_detail.dart';
 import 'package:holiscare/modules/data/students/health_data.dart';
 import 'package:holiscare/modules/home/widget/detail_classroom.dart';
 import 'package:holiscare/modules/home/widget/detail_record.dart';
@@ -34,6 +35,7 @@ const kMedicalHistory = '/medical_history';
 const kNurseRoom = '/nurse_room';
 const kNurseRoomStudent = '/nurse_room_student';
 const kDetailRequest = '/detail_request';
+const kDetailRequestStudent = '/detail_request_student';
 const kStationPage = '/holiscaree_station_page';
 const kAddDevicePage = '/add_device_page';
 const kDataPage = '/data_page';
@@ -78,6 +80,8 @@ final nurseRoomStudent = GetPage(name: kNurseRoomStudent, page: () => NurseRoomS
 
 final detailRequest = GetPage(name: kDetailRequest, page: () => DetailRequest(), bindings: []);
 
+final detailRequestStudent = GetPage(name: kDetailRequestStudent, page: () => RequestStudentDetail(), bindings: []);
+
 final dataPage = GetPage(name: kDataPage, page: () => DataPage(), bindings: []);
 
 final healthDataPage = GetPage(name: kHealthDataPage, page: () => HealthData(), bindings: []);
@@ -109,6 +113,7 @@ final List<GetPage> pages = [
   nurseRoom,
   nurseRoomStudent,
   detailRequest,
+  detailRequestStudent,
   dataPage,
   healthDataPage,
   healthWebview,

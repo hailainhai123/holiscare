@@ -36,7 +36,7 @@ class _UserPageState extends State<UserPage> {
   @override
   void initState() {
     // TODO: implement initState
-    controller.getInfoUser();
+    // controller.getInfoUser();
     super.initState();
   }
 
@@ -192,7 +192,8 @@ class _UserPageState extends State<UserPage> {
         color: globalController.colorBackground500.value,
       ),
       child: InkWell(
-        onTap: () {
+        onTap: () async {
+          await controller.getDetailAccount();
           Get.toNamed(kInforPage);
         },
         child: Column(

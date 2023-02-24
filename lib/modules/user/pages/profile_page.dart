@@ -18,6 +18,8 @@ class ProfilePage extends GetView<UserController> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   final GlobalController globalController = Get.find();
 
+  String gender = "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,6 +36,19 @@ class ProfilePage extends GetView<UserController> {
             padding:
             const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
             child: Obx(() {
+              var user = controller.detailAccount.value;
+              switch (user.gender) {
+                case 'u':
+                  gender = 'Khác';
+                  break;
+                case 'm':
+                  gender = 'Nam';
+                  break;
+                case 'f':
+                  gender = 'Nữ';
+                  break;
+              }
+
               return Column(
                 children: <Widget>[
                   const SizedBox(
@@ -43,7 +58,7 @@ class ProfilePage extends GetView<UserController> {
                       backgroundColor: AppColors.lightPrimary500,
                       minRadius: 40,
                       child: Text(
-                        controller.ten[0].toUpperCase(),
+                        user.fullName![0].toUpperCase(),
                         style: TextStyle(
                           color: globalController.colorText.value,
                             fontSize: 30, fontWeight: FontWeight.bold),
@@ -70,19 +85,19 @@ class ProfilePage extends GetView<UserController> {
                         ProfileTextField(
                           // icon: Icon(Icons.person, color: Colors.black.withOpacity(0.4)),
                           labelText: "Họ và tên",
-                          initValue: controller.ten,
+                          initValue: user.fullName,
                         ),
                         ProfileTextField(
                           labelText: "Tên đăng nhập",
-                          initValue: controller.userName,
+                          initValue: user.username,
                         ),
                         ProfileTextField(
-                          labelText: "Lớp",
-                          initValue: controller.lop,
+                          labelText: "Email",
+                          initValue: user.email,
                         ),
                         ProfileTextField(
                           labelText: "Giới tính",
-                          initValue: controller.gioiTinh,
+                          initValue: gender,
                         ),
                       ],
                     ),

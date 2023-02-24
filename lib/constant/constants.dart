@@ -79,6 +79,9 @@ class Constants {
   static String userIdOneSignal = "userIdOneSignal";
   static String pass = "pass";
   static String user = "user";
+  static String tokenType = "tokenType";
+  static String token = "token";
+  static String studentId = "studentId";
   static String signedIn = "signedIn";
   static String isTeacher = "teacher";
   static double buttonHeight = 48.0;

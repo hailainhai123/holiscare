@@ -1,42 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:holiscare/constant/routes.dart';
-import 'package:holiscare/model/health_request.dart';
 import 'package:holiscare/widget_custom/app_bar.dart';
 
+import '../../../model/request_model.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/global_controller.dart';
 import '../data_controller.dart';
 
 class NurseRoom extends StatefulWidget {
   NurseRoom({Key? key}) : super(key: key);
-  static const List<String> students = <String>[
-    'Lê Vũ Đức Anh',
-    'Phan Hà Anh',
-    'PHẠM TRÂM ANH',
-    'HÀ VIỆT LINH',
-    'Nguyễn ngọc trường phúc',
-    'Nguyễn Hoàng Bảo Anh',
-    'Đỗ Cao Bảo Châu',
-    'Đỗ Bảo Châu',
-    'Lê Hà Chi',
-    'Nguyễn Minh Chi',
-    'Đặng Minh Dương',
-    'NAKANISHI MEI',
-    'NGUYỄN ĐỨC MINH',
-    'LÊ TRÍ MINH',
-    'NGUYỄN MINH',
-    'ĐẶNG TÚ MINH',
-    'PHẠM SĨ NGUYÊN',
-    'NGUYỄN HOÀI NGUYÊN',
-    'Dương Mạc GIA NHI',
-    'NGUYỄN HOÀNG SƠN',
-    'LÊ BÌNH SƠN',
-    'VŨ THU THẢO',
-    'LA QUỲNH TRÂM',
-    'VŨ NAM TRUNG',
-    'PHẠM ĐỖ MINH TÂM',
-  ];
 
   @override
   State<NurseRoom> createState() => _NurseRoomState();
@@ -49,8 +22,6 @@ class _NurseRoomState extends State<NurseRoom> {
 
   @override
   void initState() {
-    print('haiabc');
-    controller.getListRequest();
     // TODO: implement initState
     super.initState();
   }
@@ -65,8 +36,7 @@ class _NurseRoomState extends State<NurseRoom> {
       ),
       body: RefreshIndicator(
         onRefresh: () async {
-          print('1');
-          await controller.getListRequest();
+          await controller.getListRequest(teacherId: globalController.idStudent.value);
         },
         child: Obx(() {
           return Container(
@@ -100,13 +70,6 @@ class _NurseRoomState extends State<NurseRoom> {
                 const SizedBox(
                   height: 16,
                 ),
-                const Text(
-                  '16/02/2023',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
                 const Text('Yêu cầu từ:',
                     style: TextStyle(color: Colors.indigoAccent)),
                 const SizedBox(
@@ -127,24 +90,20 @@ class _NurseRoomState extends State<NurseRoom> {
                         var request = controller.listRequest.value[index];
                         return InkWell(
                           onTap: () {
-                            Get.offAndToNamed(kDetailRequest,
+                            var name = ''.obs;
+                            for (var element in controller.listTeacher) {
+                              if (request.teacherId == element.id!) {
+                                name.value = element.name ?? '';
+                              }
+                            }
+                            Get.toNamed(kDetailRequest,
                               parameters: {
-                                'id': '${request.id!}',
-                                'name': request.name!,
-                                'teacher': request.teacher!,
+                                'id': request.id!.toString(),
+                                'name': request.studentName!,
+                                'teacher': name.value,
                                 'reason': request.reason!,
-                                'time': request.time!,
+                                'time': request.requestTime!,
                               },);
-                            // Get.toNamed(
-                            //   kDetailRequest,
-                            //   parameters: {
-                            //     'id': '${student.id!}',
-                            //     'name': student.name!,
-                            //     'teacher': student.teacher!,
-                            //     'reason': student.reason!,
-                            //     'time': student.time!,
-                            //   },
-                            // );
                           },
                           child: itemRequest(request),
                         );
@@ -161,15 +120,61 @@ class _NurseRoomState extends State<NurseRoom> {
     );
   }
 
-  Widget itemRequest(HealthRequestModel student) {
+  Widget itemRequest(RequestModel request) {
+    var status = ''.obs;
+    var color = Colors.black.obs;
+    switch (request.status!) {
+      case 0:
+        status.value = 'Yêu cầu mới';
+        break;
+      case 1:
+        status.value = 'Đồng ý';
+        color.value = Colors.greenAccent;
+        break;
+      case 2:
+        status.value = 'Từ chối';
+        color.value = Colors.redAccent;
+        break;
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('HS ${student.name!.toUpperCase()}'),
-            const Icon(
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                RichText(
+                  text: TextSpan(
+                    text: 'Học sinh: ',
+                    style: DefaultTextStyle.of(context).style,
+                    children: <TextSpan>[
+                      TextSpan(text: request.studentName!, style: const TextStyle(fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                ),
+                RichText(
+                  text: TextSpan(
+                    text: 'Thời gian: ',
+                    style: DefaultTextStyle.of(context).style,
+                    children: <TextSpan>[
+                      TextSpan(text: request.requestTime!, style: const TextStyle(fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                ),
+                RichText(
+                  text: TextSpan(
+                    text: 'Trạng thái: ',
+                    style: DefaultTextStyle.of(context).style,
+                    children: <TextSpan>[
+                      TextSpan(text: status.value, style: TextStyle(fontWeight: FontWeight.bold, color: color.value)),
+                    ],
+                  ),
+                ),
+                // Text('Thời gian: ${request.requestTime!}'),
+              ],
+            ),            const Icon(
               Icons.chevron_right,
               color: AppColors.black,
             )

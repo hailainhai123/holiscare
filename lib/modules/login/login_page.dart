@@ -43,27 +43,6 @@ class _LoginPageState extends State<LoginPage> {
   Widget _emailPasswordWidget() {
     return Column(
       children: <Widget>[
-        // AppInput(
-        //   controller: _classController,
-        //   validator: (classManage) {
-        //     if (classManage == null || classManage.trim().isEmpty) {
-        //       return '';
-        //     }
-        //     return null;
-        //   },
-        //   // autofocus: true,
-        //   enabled: true,
-        //   hintText: 'Lớp',
-        //   iconLeft: IconEnums.home,
-        //   onTapIconRight: () async {
-        //     _classController.clear();
-        //   },
-        //   enableInteractiveSelection: false,
-        //   iconRight: IconEnums.close,
-        // ),
-        // const SizedBox(
-        //   height: 16.0,
-        // ),
         AppInput(
           controller: _emailController,
           validator: (phoneNumber) {
@@ -108,25 +87,36 @@ class _LoginPageState extends State<LoginPage> {
   ) {
     return InkWell(
       onTap: () async {
-        _classController.text = "10ab4";
-        if (globalController.isTeacher.value) {
-          if (_classController.text.trim().toUpperCase() == '10AB4' &&
-              _emailController.text.toUpperCase().trim() == 'ADMIN' &&
-              _passwordController.text.trim() == '123456') {
+        await controller.onLogin(
+            _emailController.text, _passwordController.text, '', "");
+        if (controller.authen.value.roles![0] == 'TEACHER') {
+          if (globalController.role.value == 'TEACHER') {
+            globalController.isTeacher.value = true;
             Get.snackbar('Thông báo', 'Đăng nhập thành công',
                 snackPosition: SnackPosition.TOP);
             SharedPreferences prefs = await SharedPreferences.getInstance();
-            Map<String, dynamic> user = {
-              'taiKhoan': _emailController.text.toUpperCase().trim(),
-              'matKhau': _passwordController.text.trim(),
-              'ten': 'Admin',
-              'lop': _classController.text.trim().toUpperCase(),
-              'gioiTinh': 'Nu',
-            };
-            bool result = await prefs.setString('user', jsonEncode(user));
             await prefs.setBool(Constants.signedIn, true);
             await prefs.setBool(Constants.isTeacher, true);
-            print('haiabc $result');
+            await prefs.setString(Constants.tokenType, controller.authen.value.tokenType!);
+            await prefs.setString(Constants.token, controller.authen.value.token!);
+            await prefs.setInt(Constants.studentId, controller.authen.value.bundle!.attributes![0].value ?? 1);
+            Get.toNamed(kRouteIndex);
+          } else {
+            Get.snackbar('Thông báo', 'Đăng nhập thất bại',
+                snackPosition: SnackPosition.TOP);
+            return;
+          }
+        } else if (controller.authen.value.roles![0] == 'STUDENT') {
+          if (globalController.role.value == 'STUDENT') {
+            globalController.isTeacher.value = false;
+            Get.snackbar('Thông báo', 'Đăng nhập thành công',
+                snackPosition: SnackPosition.TOP);
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            await prefs.setBool(Constants.signedIn, true);
+            await prefs.setBool(Constants.isTeacher, false);
+            await prefs.setString(Constants.tokenType, controller.authen.value.tokenType!);
+            await prefs.setString(Constants.token, controller.authen.value.token!);
+            await prefs.setInt(Constants.studentId, controller.authen.value.bundle!.attributes![0].value ?? 1);
             Get.toNamed(kRouteIndex);
           } else {
             Get.snackbar('Thông báo', 'Đăng nhập thất bại',
@@ -134,48 +124,9 @@ class _LoginPageState extends State<LoginPage> {
             return;
           }
         } else {
-          if (_classController.text.trim().toUpperCase() == '10AB4') {
-            for (var element in Constants.listGmailStudent) {
-              var tkhoan = _emailController.text.toUpperCase().trim();
-              if (tkhoan == element.toUpperCase().trim()) {
-                controller.findStudent(tkhoan);
-                print('haiabc ${controller.name.value}');
-                globalController.nameStudent.value = controller.name.value;
-                for (var element2 in Constants.listPasswordStudent) {
-                  if (_passwordController.text.trim() == element2.trim()) {
-                    Get.snackbar('Thông báo', 'Đăng nhập thành công',
-                        snackPosition: SnackPosition.TOP);
-                    SharedPreferences prefs = await SharedPreferences.getInstance();
-                    Map<String, dynamic> user = {
-                      'taiKhoan': _emailController.text.toUpperCase().trim(),
-                      'matKhau': _passwordController.text.trim(),
-                      'ten': controller.name.value,
-                      'lop': _classController.text.trim().toUpperCase(),
-                      'gioiTinh': controller.sex.value,
-                    };
-                    bool result = await prefs.setString('user', jsonEncode(user));
-                    await prefs.setBool(Constants.signedIn, true);
-                    await prefs.setBool(Constants.isTeacher, false);
-                    print('haiabc $result');
-                    Get.toNamed(kRouteIndex);
-                    return;
-                  } else {
-                    Get.snackbar('Thông báo', 'Đăng nhập thất bại',
-                        snackPosition: SnackPosition.TOP);
-                    return;
-                  }
-                }
-              }
-            }
-            Get.snackbar('Thông báo', 'Đăng nhập thất bại',
-                snackPosition: SnackPosition.TOP);
-          } else {
-            Get.snackbar('Thông báo', 'Đăng nhập thất bại',
-                snackPosition: SnackPosition.TOP);
-            return;
-          }
+          Get.snackbar('Thông báo', 'Đăng nhập thất bại',
+              snackPosition: SnackPosition.TOP);
         }
-        // Get.toNamed(kRouteIndex);
       },
       child: Container(
         width: MediaQuery.of(context).size.width,

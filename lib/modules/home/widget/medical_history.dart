@@ -2,6 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:holiscare/model/request_model.dart';
+import 'package:holiscare/modules/home/home_controller.dart';
 import 'package:holiscare/modules/home/widget/utils_calendar.dart';
 import 'package:holiscare/utils/colors.dart';
 import 'package:intl/intl.dart';
@@ -9,7 +12,6 @@ import 'package:holiscare/widget_custom/app_bar.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../constant/routes.dart';
-import '../../../model/health_request.dart';
 import '../../../utils/global_controller.dart';
 import '../../data/data_controller.dart';
 
@@ -23,121 +25,12 @@ class _MedicalHistoryState extends State<MedicalHistory> {
   final RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
       .toggledOff; // Can be toggled on/off by longpressing a date
   final GlobalController globalController = Get.find();
+  final HomeController homeController = Get.find();
   final DataController controller = Get.find();
-
-  DateTime _focusedDay = DateTime.now();
-  DateTime? _selectedDay;
-  DateTime? _rangeStart;
-  DateTime? _rangeEnd;
-
-  Map<String, List> mySelectedEvents = {};
-
-  final titleController = TextEditingController();
-  final descpController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _selectedDay = _focusedDay;
-    loadPreviousEvents();
-  }
-
-  loadPreviousEvents() {
-    mySelectedEvents = {
-      // "2023-02-13": [
-      //   {"eventDescp": "11", "eventTitle": "111"},
-      //   {"eventDescp": "22", "eventTitle": "22"}
-      // ],
-      // "2023-02-25": [
-      //   {"eventDescp": "22", "eventTitle": "22"}
-      // ],
-      // "2023-02-20": [
-      //   {"eventTitle": "ss", "eventDescp": "ss"}
-      // ]
-    };
-  }
-
-  List _listOfDayEvents(DateTime dateTime) {
-    if (mySelectedEvents[DateFormat('yyyy-MM-dd').format(dateTime)] != null) {
-      return mySelectedEvents[DateFormat('yyyy-MM-dd').format(dateTime)]!;
-    } else {
-      return [];
-    }
-  }
-
-  _showAddEventDialog() async {
-    await showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text(
-          'Sự kiện mới',
-          textAlign: TextAlign.center,
-        ),
-        content: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            buildTextField(controller: titleController, hint: 'Tiêu đề'),
-            const SizedBox(
-              height: 20.0,
-            ),
-            buildTextField(controller: descpController, hint: 'Nội dung'),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Huỷ'),
-          ),
-          TextButton(
-            child: const Text('Thêm'),
-            onPressed: () {
-              if (titleController.text.isEmpty &&
-                  descpController.text.isEmpty) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Required title and description'),
-                    duration: Duration(seconds: 2),
-                  ),
-                );
-                //Navigator.pop(context);
-                return;
-              } else {
-                print(titleController.text);
-                print(descpController.text);
-
-                setState(() {
-                  if (mySelectedEvents[
-                          DateFormat('yyyy-MM-dd').format(_selectedDay!)] !=
-                      null) {
-                    mySelectedEvents[
-                            DateFormat('yyyy-MM-dd').format(_selectedDay!)]
-                        ?.add({
-                      "eventTitle": titleController.text,
-                      "eventDescp": descpController.text,
-                    });
-                  } else {
-                    mySelectedEvents[
-                        DateFormat('yyyy-MM-dd').format(_selectedDay!)] = [
-                      {
-                        "eventTitle": titleController.text,
-                        "eventDescp": descpController.text,
-                      }
-                    ];
-                  }
-                });
-                print(
-                    "New Event for backend developer ${json.encode(mySelectedEvents)}");
-                titleController.clear();
-                descpController.clear();
-                Navigator.pop(context);
-                return;
-              }
-            },
-          )
-        ],
-      ),
-    );
   }
 
   @override
@@ -153,99 +46,115 @@ class _MedicalHistoryState extends State<MedicalHistory> {
         isBack: true,
         backgroundColor: globalController.colorBackground.value,
       ),
-      body: Container(
-        width: Get.width,
-        height: Get.height,
-        color: globalController.colorBackground.value,
-        padding: const EdgeInsets.all(16),
-        child: controller.listRequest.isNotEmpty
-            ? ListView.separated(
-                itemCount: controller.listRequest.length,
-                physics: const AlwaysScrollableScrollPhysics(),
-                padding: const EdgeInsets.only(top: 8),
-                separatorBuilder: (_, index) {
-                  return const Divider(
-                    color: AppColors.lightSilver,
-                  );
+      body: Obx(() {
+        return Container(
+          width: Get.width,
+          height: Get.height,
+          color: globalController.colorBackground.value,
+          padding: const EdgeInsets.all(16),
+          child: controller.listRequest.isNotEmpty
+              ? RefreshIndicator(
+                onRefresh: () async {
+                  if (globalController.isTeacher.value) {
+                    var idStudent = int.parse(homeController.index.value);
+                    await controller.getListRequest(studentId: idStudent);
+                  } else {
+                    await controller.getListRequest(studentId: globalController.idStudent.value);
+                  }
                 },
-                itemBuilder: (context, index) {
-                  var request = controller.listRequest.value[index];
-                  return InkWell(
-                    onTap: () {},
-                    child: itemRequest(request),
-                  );
-                },
+                child: ListView.separated(
+                    itemCount: controller.listRequest.length,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: const EdgeInsets.only(top: 8),
+                    separatorBuilder: (_, index) {
+                      return const Divider(
+                        color: AppColors.lightSilver,
+                      );
+                    },
+                    itemBuilder: (context, index) {
+                      var request = controller.listRequest.value[index];
+                      return InkWell(
+                        onTap: () {
+                          var name = ''.obs;
+                          for (var element in controller.listTeacher) {
+                            if (request.teacherId == element.id!) {
+                              name.value = element.name ?? '';
+                            }
+                          }
+                          print('$name');
+                          Get.toNamed(kDetailRequestStudent,
+                            parameters: {
+                              'name': request.studentName!,
+                              'teacher': name.value,
+                              'reason': request.reason!,
+                              'time': request.requestTime!,
+                            },);
+                        },
+                        child: itemRequestStudent(request),
+                      );
+                    },
+                  ),
               )
-            : Text('Không có yêu cầu của học sinh nào.'),
-      ),
-      floatingActionButton: globalController.isTeacher.value ? null : FloatingActionButton.extended(
-        onPressed: () {
-          Get.toNamed(kDetailRequest);
-        },
-        label: const Text('Thêm yêu cầu'),
-      ),
+              : const Text('Không có yêu cầu của học sinh nào.'),
+        );
+      }),
+      floatingActionButton: globalController.isTeacher.value
+          ? null
+          : FloatingActionButton.extended(
+              onPressed: () {
+                Get.toNamed(kDetailRequest);
+              },
+              label: const Text('Thêm yêu cầu'),
+            ),
     );
   }
 
-  headerStyle() {
-    return HeaderStyle(
-      titleTextStyle: const TextStyle(color: AppColors.black, fontSize: 20.0),
-      decoration: BoxDecoration(
-          color: globalController.colorBackground500.value,
-          borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(10), topRight: Radius.circular(10))),
-      formatButtonTextStyle:
-          const TextStyle(color: AppColors.black, fontSize: 16.0),
-      formatButtonDecoration: const BoxDecoration(
-        color: AppColors.error50,
-        borderRadius: BorderRadius.all(
-          Radius.circular(5.0),
-        ),
-      ),
-      leftChevronIcon: const Icon(
-        Icons.chevron_left,
-        color: AppColors.black,
-        size: 28,
-      ),
-      rightChevronIcon: const Icon(
-        Icons.chevron_right,
-        color: AppColors.black,
-        size: 28,
-      ),
-    );
-  }
-
-  Widget buildTextField(
-      {String? hint, required TextEditingController controller}) {
-    return TextField(
-      controller: controller,
-      textCapitalization: TextCapitalization.words,
-      decoration: InputDecoration(
-        labelText: hint ?? '',
-        focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: AppColors.error50, width: 1.5),
-          borderRadius: BorderRadius.circular(
-            10.0,
-          ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: AppColors.error50, width: 1.5),
-          borderRadius: BorderRadius.circular(
-            10.0,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget itemRequest(HealthRequestModel student) {
+  Widget itemRequestStudent(RequestModel request) {
+    var status = ''.obs;
+    var color = Colors.black.obs;
+    switch (request.status!) {
+      case 0:
+        status.value = 'Yêu cầu mới';
+        break;
+      case 1:
+        status.value = 'Đồng ý';
+        color.value = Colors.greenAccent;
+        break;
+      case 2:
+        status.value = 'Từ chối';
+        color.value = Colors.redAccent;
+        break;
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('HS ${student.name!.toUpperCase()}'),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                RichText(
+                  text: TextSpan(
+                    text: 'Thời gian: ',
+                    style: DefaultTextStyle.of(context).style,
+                    children: <TextSpan>[
+                      TextSpan(text: request.requestTime!, style: const TextStyle(fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                ),
+                RichText(
+                  text: TextSpan(
+                    text: 'Trạng thái: ',
+                    style: DefaultTextStyle.of(context).style,
+                    children: <TextSpan>[
+                      TextSpan(text: status.value, style: TextStyle(fontWeight: FontWeight.bold, color: color.value)),
+                    ],
+                  ),
+                ),
+                // Text('Thời gian: ${request.requestTime!}'),
+              ],
+            ),
             const Icon(
               Icons.chevron_right,
               color: AppColors.black,
