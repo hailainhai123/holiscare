@@ -49,7 +49,7 @@ class ProfilePage extends GetView<UserController> {
                   break;
               }
 
-              return Column(
+              return user.id == null ? const Center(child: Text('Hệ thống lỗi. Vui lòng quay lại sau.')) : Column(
                 children: <Widget>[
                   const SizedBox(
                     height: 15,

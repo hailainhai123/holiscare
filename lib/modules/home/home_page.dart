@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(
                 height: 8.0,
               ),
-              Obx(() {
+              if (controller.listStudent.isNotEmpty) Obx(() {
                 return Expanded(
                   child: GridView.count(
                     crossAxisCount: 3,
@@ -80,7 +80,7 @@ class _HomePageState extends State<HomePage> {
                     }),
                   ),
                 );
-              }),
+              }) else const Center(child: Text('Hệ thống lỗi. Vui lòng quay lại sau.')),
             ],
           ),
         ));
