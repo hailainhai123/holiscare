@@ -95,7 +95,7 @@ class _MedicalHistoryState extends State<MedicalHistory> {
                     },
                   ),
               )
-              : const Text('Không có yêu cầu của học sinh nào.'),
+              : const Text('Không có yêu cầu của học sinh.'),
         );
       }),
       floatingActionButton: globalController.isTeacher.value

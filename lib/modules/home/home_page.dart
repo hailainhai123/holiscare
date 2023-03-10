@@ -39,50 +39,54 @@ class _HomePageState extends State<HomePage> {
           isBack: false,
           backgroundColor: globalController.colorBackground.value,
         ),
-        body: Container(
-          color: globalController.colorBackground.value,
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              const Text(
-                '10AB4',
-                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-              ),
-              const Divider(
-                color: AppColors.black,
-              ),
-              const SizedBox(
-                height: 8.0,
-              ),
-              if (controller.listStudent.isNotEmpty) Obx(() {
-                return Expanded(
-                  child: GridView.count(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 16.0,
-                    mainAxisSpacing: 16.0,
-                    childAspectRatio: 0.7,
-                    children:
-                        List.generate(controller.listStudent.length, (index) {
-                      var student = controller.listStudent[index];
-                      return InkWell(
-                        onTap: () {
-                          Get.toNamed(kDetailClassroomPage, parameters: {
-                            'title': student.name!,
-                            'index': '${student.id!}',
-                          });
-                        },
-                        child: Center(
-                          child: SelectCard(
-                            student: student,
-                          ),
-                        ),
-                      );
-                    }),
+        body: Obx(
+          () {
+            return Container(
+              color: globalController.colorBackground.value,
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  const Text(
+                    '10AB4',
+                    style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
                   ),
-                );
-              }) else const Center(child: Text('Hệ thống lỗi. Vui lòng quay lại sau.')),
-            ],
-          ),
+                  const Divider(
+                    color: AppColors.black,
+                  ),
+                  const SizedBox(
+                    height: 8.0,
+                  ),
+                  if (controller.listStudent.isNotEmpty) Obx(() {
+                    return Expanded(
+                      child: GridView.count(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 16.0,
+                        mainAxisSpacing: 16.0,
+                        childAspectRatio: 0.7,
+                        children:
+                            List.generate(controller.listStudent.length, (index) {
+                          var student = controller.listStudent[index];
+                          return InkWell(
+                            onTap: () {
+                              Get.toNamed(kDetailClassroomPage, parameters: {
+                                'title': student.name!,
+                                'index': '${student.id!}',
+                              });
+                            },
+                            child: Center(
+                              child: SelectCard(
+                                student: student,
+                              ),
+                            ),
+                          );
+                        }),
+                      ),
+                    );
+                  }) else const Center(child: Text('Hệ thống lỗi. Vui lòng quay lại sau.')),
+                ],
+              ),
+            );
+          }
         ));
   }
 }

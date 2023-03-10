@@ -48,6 +48,7 @@ class _SplashPageState extends State<SplashPage> {
                         title: 'Bắt đầu',
                         onPressed: () {
                           Future.delayed(const Duration(seconds: 0), () {
+                            // Get.toNamed(kRouteIndex);
                             Get.toNamed(kAuth);
                           });
                         })),

@@ -63,319 +63,323 @@ class _DetailRequestState extends State<DetailRequest> {
           height: Get.height,
           color: globalController.colorBackground.value,
           padding: const EdgeInsets.all(16),
-          child: Obx(
-                  () {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          child: Obx(() {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          'assets/images/icon_sos.png',
-                          width: 50,
-                          height: 50,
-                        ),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        const Text('Yêu cầu đi y tế',
-                            style:
-                            TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 18)),
-                      ],
+                    Image.asset(
+                      'assets/images/icon_sos.png',
+                      width: 50,
+                      height: 50,
                     ),
                     const SizedBox(
-                      height: 8,
+                      width: 8,
                     ),
-                    const Divider(
-                      color: Colors.black,
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    if (globalController.isTeacher.value)
-                      Text(
-                        'HS ${controller.name.value}',
+                    const Text('Yêu cầu đi y tế',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 18)),
+                  ],
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                const Divider(
+                  color: Colors.black,
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                if (globalController.isTeacher.value)
+                  Text(
+                    'HS ${controller.name.value}',
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold),
+                  )
+                else
+                  Text(
+                    'HS ${globalController.nameStudent.value}',
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                const SizedBox(
+                  height: 16,
+                ),
+                const Text('Kính gửi:',
+                    style: TextStyle(color: Colors.indigoAccent)),
+                const SizedBox(
+                  height: 16,
+                ),
+                globalController.isTeacher.value
+                    ? Text(
+                        'GV ${controller.teacher.value}',
                         style: const TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold),
                       )
-                    else
-                      Text(
-                        'HS ${globalController.nameStudent.value}',
+                    : DropdownButtonFormField2(
+                        decoration: const InputDecoration(
+                          isDense: true,
+                          fillColor: Colors.white,
+                          border: InputBorder.none,
+                          filled: true,
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(
+                                  ViewConstants.defaultBorderRadiusBtn),
+                            ),
+                            borderSide:
+                                BorderSide(color: AppColors.lightSilver),
+                          ),
+                          contentPadding: EdgeInsets.zero,
+                        ),
+                        isExpanded: true,
+                        hint: const Text(
+                          'Chọn giáo viên',
+                        ),
+                        icon: const Icon(
+                          Icons.arrow_drop_down,
+                          color: Colors.black45,
+                        ),
+                        iconSize: 30,
+                        buttonHeight: 48,
+                        // buttonPadding: const EdgeInsets.only(left: 20, right: 10),
+                        dropdownDecoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        items: controller.listNameTeacher.value
+                            .map((item) => DropdownMenuItem<String>(
+                                  value: item,
+                                  child: Text(
+                                    item,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ))
+                            .toList(),
+                        validator: (value) {
+                          if (value == null) {
+                            return 'Chọn giáo viên.';
+                          }
+                        },
+                        onChanged: (value) {
+                          //Do something when changing the item if you want.
+                          print('1');
+                          setState(() {
+                            nameTeacher = value.toString();
+                          });
+                          print('$nameTeacher');
+                        },
+                        onSaved: (value) {
+                          // selectedValue = value.toString();
+                          // print('$selectedValue');
+                        },
+                      ),
+                const SizedBox(
+                  height: 16,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        const Text(
+                          'Học sinh: ',
+                          style: TextStyle(color: Colors.indigoAccent),
+                        ),
+                        globalController.isTeacher.value
+                            ? Text(controller.name.value)
+                            : Text(globalController.nameStudent.value),
+                      ],
+                    ),
+                    Row(
+                      children: const [
+                        Text(
+                          'Lớp: ',
+                          style: TextStyle(color: Colors.indigoAccent),
+                        ),
+                        Text('10AB4')
+                      ],
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                const Text(
+                  'Có nguyện vọng: ',
+                  style: TextStyle(color: Colors.indigoAccent),
+                ),
+                const SizedBox(
+                  height: 4,
+                ),
+                Row(
+                  children: [
+                    Checkbox(
+                        value: true,
+                        activeColor: Colors.white,
+                        checkColor: Colors.black,
+                        onChanged: (bool? value) {}),
+                    const SizedBox(
+                      width: 16,
+                    ),
+                    const Text('Xuống phòng y tế')
+                  ],
+                ),
+                const Text(
+                  'Lý do:',
+                  style: TextStyle(color: Colors.indigoAccent),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                globalController.isTeacher.value
+                    ? Text(
+                        controller.reason.value,
                         style: const TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold),
+                      )
+                    : AppInput(
+                        controller: reasonController,
+                        validator: (classManage) {
+                          if (classManage == null ||
+                              classManage.trim().isEmpty) {
+                            return '';
+                          }
+                          return null;
+                        },
+                        // autofocus: true,
+                        enabled: true,
+                        hintText: 'Lý do',
+                        onTapIconRight: () async {
+                          reasonController.clear();
+                        },
+                        enableInteractiveSelection: false,
+                        iconRight: IconEnums.close,
                       ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    const Text('Kính gửi:',
-                        style: TextStyle(color: Colors.indigoAccent)),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    globalController.isTeacher.value
-                        ? Text(
-                      'GV ${controller.teacher.value}',
-                      style: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold),
-                    )
-                        : DropdownButtonFormField2(
-                      decoration: const InputDecoration(
-                        isDense: true,
-                        fillColor: Colors.white,
-                        border: InputBorder.none,
-                        filled: true,
-                        enabledBorder:
-                        OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(
-                                ViewConstants.defaultBorderRadiusBtn),
+                const SizedBox(
+                  height: 16,
+                ),
+                const Text(
+                  'Thời gian đi:',
+                  style: TextStyle(color: Colors.indigoAccent),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                globalController.isTeacher.value
+                    ? Text(
+                        controller.time.value,
+                        style: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      )
+                    : AppInput(
+                        controller: timeController,
+                        validator: (classManage) {
+                          if (classManage == null ||
+                              classManage.trim().isEmpty) {
+                            return '';
+                          }
+                          return null;
+                        },
+                        // autofocus: true,
+                        enabled: true,
+                        hintText: 'Thời gian đi',
+                        onTapIconRight: () async {
+                          print('1');
+                          DatePicker.showDateTimePicker(context,
+                              showTitleActions: true,
+                              minTime: DateTime.now(),
+                              maxTime: DateTime(2024, 5, 5, 20, 50),
+                              onChanged: (date) {}, onConfirm: (date) {
+                            setState(() {
+                              timeController.text =
+                                  TimeUtil.format(date, TimeUtil.DDMMYYYYHHMM);
+                            });
+                          }, locale: LocaleType.en);
+                        },
+                        enableInteractiveSelection: false,
+                        iconRight: IconEnums.calendar,
+                        colorRightIcon: AppColors.backgroundButton,
+                      ),
+                const SizedBox(
+                  height: 16,
+                ),
+                globalController.isTeacher.value
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: AppButton(
+                                title: 'Đồng ý',
+                                onPressed: () async {
+                                  await controller.acceptRequest(
+                                      int.parse(controller.id.value));
+
+                                  await controller.getListRequest(
+                                      teacherId:
+                                          globalController.idStudent.value);
+
+                                  Get.back();
+                                  Get.snackbar('Thông báo', 'Đã cho phép',
+                                      snackPosition: SnackPosition.TOP);
+                                }),
                           ),
-                          borderSide: BorderSide(color: AppColors.lightSilver),
-                        ),
-                        contentPadding: EdgeInsets.zero,
-                      ),
-                      isExpanded: true,
-                      hint: const Text(
-                        'Chọn giáo viên',
-                      ),
-                      icon: const Icon(
-                        Icons.arrow_drop_down,
-                        color: Colors.black45,
-                      ),
-                      iconSize: 30,
-                      buttonHeight: 48,
-                      // buttonPadding: const EdgeInsets.only(left: 20, right: 10),
-                      dropdownDecoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      items: controller.listNameTeacher.value
-                          .map((item) =>
-                          DropdownMenuItem<String>(
-                            value: item,
-                            child: Text(
-                              item,
-                              style: const TextStyle(
-                                fontSize: 14,
-                              ),
-                            ),
-                          ))
-                          .toList(),
-                      validator: (value) {
-                        if (value == null) {
-                          return 'Chọn giáo viên.';
-                        }
-                      },
-                      onChanged: (value) {
-                        //Do something when changing the item if you want.
-                        print('1');
-                        setState(() {
-                          nameTeacher = value.toString();
-                        });
-                        print('$nameTeacher');
-                      },
-                      onSaved: (value) {
-                        // selectedValue = value.toString();
-                        // print('$selectedValue');
-                      },
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            const Text(
-                              'Học sinh: ',
-                              style: TextStyle(color: Colors.indigoAccent),
-                            ),
-                            globalController.isTeacher.value
-                                ? Text(controller.name.value)
-                                : Text(globalController.nameStudent.value),
-                          ],
-                        ),
-                        Row(
-                          children: const [
-                            Text(
-                              'Lớp: ',
-                              style: TextStyle(color: Colors.indigoAccent),
-                            ),
-                            Text('10AB4')
-                          ],
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    const Text(
-                      'Có nguyện vọng: ',
-                      style: TextStyle(color: Colors.indigoAccent),
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    Row(
-                      children: [
-                        Checkbox(
-                            value: true,
-                            activeColor: Colors.white,
-                            checkColor: Colors.black,
-                            onChanged: (bool? value) {}),
-                        const SizedBox(
-                          width: 16,
-                        ),
-                        const Text('Xuống phòng y tế')
-                      ],
-                    ),
-                    const Text(
-                      'Lý do:',
-                      style: TextStyle(color: Colors.indigoAccent),
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    globalController.isTeacher.value
-                        ? Text(
-                      controller.reason.value,
-                      style: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold),
-                    )
-                        : AppInput(
-                      controller: reasonController,
-                      validator: (classManage) {
-                        if (classManage == null || classManage
-                            .trim()
-                            .isEmpty) {
-                          return '';
-                        }
-                        return null;
-                      },
-                      // autofocus: true,
-                      enabled: true,
-                      hintText: 'Lý do',
-                      onTapIconRight: () async {
-                        reasonController.clear();
-                      },
-                      enableInteractiveSelection: false,
-                      iconRight: IconEnums.close,
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    const Text(
-                      'Thời gian đi:',
-                      style: TextStyle(color: Colors.indigoAccent),
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    globalController.isTeacher.value
-                        ? Text(
-                      controller.time.value,
-                      style: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold),
-                    )
-                        : AppInput(
-                      controller: timeController,
-                      validator: (classManage) {
-                        if (classManage == null || classManage
-                            .trim()
-                            .isEmpty) {
-                          return '';
-                        }
-                        return null;
-                      },
-                      // autofocus: true,
-                      enabled: true,
-                      hintText: 'Thời gian đi',
-                      onTapIconRight: () async {
-                        print('1');
-                        DatePicker.showDateTimePicker(context,
-                            showTitleActions: true,
-                            minTime: DateTime.now(),
-                            maxTime: DateTime(2024, 5, 5, 20, 50),
-                            onChanged: (date) {},
-                            onConfirm: (date) {
-                              setState(() {
-                                timeController.text = TimeUtil.format(
-                                    date, TimeUtil.DDMMYYYYHHMM);
-                              });
-                            },
-                            locale: LocaleType.en);
-                      },
-                      enableInteractiveSelection: false,
-                      iconRight: IconEnums.calendar,
-                      colorRightIcon: AppColors.backgroundButton,
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    globalController.isTeacher.value
-                        ? Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: AppButton(
-                              title: 'Đồng ý',
-                              onPressed: () async {
-                                await controller.acceptRequest(int.parse(controller.id.value));
+                          const Spacer(),
+                          Expanded(
+                            child: AppButton(
+                                title: 'Từ chối',
+                                onPressed: () async {
+                                  await controller.declineRequest(
+                                      int.parse(controller.id.value));
 
-                                await controller.getListRequest(teacherId: globalController.idStudent.value);
+                                  await controller.getListRequest(
+                                      teacherId:
+                                          globalController.idStudent.value);
 
-                                Get.back();
-                                Get.snackbar('Thông báo', 'Đã cho phép',
-                                    snackPosition: SnackPosition.TOP);
-                              }),
-                        ),
-                        const Spacer(),
-                        Expanded(
-                          child: AppButton(
-                              title: 'Từ chối',
-                              onPressed: () async {
-                                await controller.declineRequest(int.parse(controller.id.value));
-
-                                await controller.getListRequest(teacherId: globalController.idStudent.value);
-
-                                Get.back();
-                                Get.snackbar('Thông báo', 'Không cho phép',
-                                    snackPosition: SnackPosition.TOP);
-                              }),
-                        ),
-                      ],
-                    )
-                        : Row(
-                      children: [
-                        const Spacer(),
-                        Expanded(
-                          child: AppButton(
-                              title: 'Gửi',
-                              onPressed: () async {
-                                for (var element in controller.listTeacher) {
-                                  if (nameTeacher!.toLowerCase().trim() == element.name!.toLowerCase().trim()) {
-                                    controller.teacherId.value = element.id ?? 1;
+                                  Get.back();
+                                  Get.snackbar('Thông báo', 'Không cho phép',
+                                      snackPosition: SnackPosition.TOP);
+                                }),
+                          ),
+                        ],
+                      )
+                    : Row(
+                        children: [
+                          const Spacer(),
+                          Expanded(
+                            child: AppButton(
+                                title: 'Gửi',
+                                onPressed: () async {
+                                  for (var element in controller.listTeacher) {
+                                    if (nameTeacher!.toLowerCase().trim() ==
+                                        element.name!.toLowerCase().trim()) {
+                                      controller.teacherId.value =
+                                          element.id ?? 1;
+                                    }
                                   }
-                                }
-                                await controller.postRequest(
-                                    reasonController.text, timeController.text, controller.teacherId.value);
+                                  await controller.postRequest(
+                                      reasonController.text,
+                                      timeController.text,
+                                      controller.teacherId.value);
 
-                                await controller.getListRequest(studentId: globalController.idStudent.value);
+                                  await controller.getListRequest(
+                                      studentId:
+                                          globalController.idStudent.value);
 
-                                Get.back();
-                                Get.snackbar('Thông báo', 'Gửi thành công',
-                                    snackPosition: SnackPosition.TOP);
-                              }),
-                        ),
-                        const Spacer(),
-                      ],
-                    )
-                  ],
-                );
-              }
-          ),
+                                  Get.back();
+                                  Get.snackbar('Thông báo', 'Gửi thành công',
+                                      snackPosition: SnackPosition.TOP);
+                                }),
+                          ),
+                          const Spacer(),
+                        ],
+                      )
+              ],
+            );
+          }),
         ),
       ),
     );

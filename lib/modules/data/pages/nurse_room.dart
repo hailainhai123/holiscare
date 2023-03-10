@@ -111,7 +111,7 @@ class _NurseRoomState extends State<NurseRoom> {
                     ),
                   )
                 else
-                  const Text('Không có yêu cầu của học sinh nào'),
+                  const Text('Không có yêu cầu của học sinh.'),
               ],
             ),
           );

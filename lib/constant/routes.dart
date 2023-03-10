@@ -7,6 +7,8 @@ import 'package:holiscare/modules/home/widget/detail_classroom.dart';
 import 'package:holiscare/modules/home/widget/detail_record.dart';
 import 'package:holiscare/modules/home/widget/health_record.dart';
 import 'package:holiscare/modules/home/widget/medical_history.dart';
+import 'package:holiscare/modules/human_body/pages/disease_page.dart';
+import 'package:holiscare/modules/human_body/pages/detail_disease.dart';
 import 'package:holiscare/modules/user/pages/profile_page.dart';
 import 'package:holiscare/modules/user/user_page.dart';
 import 'package:holiscare/modules/web_health/web_health.dart';
@@ -46,6 +48,14 @@ const kChartPage = '/chart_page';
 const kUserPage = '/user_page';
 const kInforPage = '/infor_page';
 const kContactPage = '/contact_page';
+const kDiseasePage = '/disease_page';
+const kDetailDisease = '/detail_disease_page';
+const kViemPhoi = '/viem_phoi_page';
+const kViemPheQuan = '/viem_phe_quan_page';
+const kTacNghen = '/tac_nghen_page';
+const kUngThu = '/ung_thu_page';
+const kViemMangPhoi = '/viem_mang_phoi_page';
+const kPhuPhoi = '/phu_phoi_page';
 const kDevicePage = '/device_page';
 const kDeviceDetailPage = '/device_detail_page';
 const kEditDevicePage = '/edit_device_page';
@@ -53,52 +63,75 @@ const kLoginPage = '/login';
 const kRegisterPage = '/register';
 const kCommingSoonPage = '/commingSoon';
 
-final splashPage = GetPage(name: kSplash, page: () => SplashPage(), bindings: []);
+final splashPage =
+    GetPage(name: kSplash, page: () => SplashPage(), bindings: []);
 
 final authPage = GetPage(name: kAuth, page: () => DivideAuth(), bindings: []);
 
-final languagePage = GetPage(name: kChooseLanguage, page: () => LanguagePage(), bindings: []);
+final languagePage =
+    GetPage(name: kChooseLanguage, page: () => LanguagePage(), bindings: []);
 
 final indexPage = GetPage(
     name: kRouteIndex,
     page: () => MainPage(),
     bindings: [GlobalBinding(), HomeBinding()]);
 
-final homePage = GetPage(name: kHomePage, page: () => HomePage(), bindings: [HomeBinding()]);
+final homePage =
+    GetPage(name: kHomePage, page: () => HomePage(), bindings: [HomeBinding()]);
 
-final detailClassroom = GetPage(name: kDetailClassroomPage, page: () => DetailClassroom(), bindings: []);
+final detailClassroom = GetPage(
+    name: kDetailClassroomPage, page: () => DetailClassroom(), bindings: []);
 
-final healthRecord = GetPage(name: kHealthRecord, page: () => HealThRecord(), bindings: []);
+final healthRecord =
+    GetPage(name: kHealthRecord, page: () => HealThRecord(), bindings: []);
 
-final detailRecord = GetPage(name: kDetailRecord, page: () => DetailRecord(), bindings: []);
+final detailRecord =
+    GetPage(name: kDetailRecord, page: () => DetailRecord(), bindings: []);
 
-final medicalHistory = GetPage(name: kMedicalHistory, page: () => MedicalHistory(), bindings: []);
+final medicalHistory =
+    GetPage(name: kMedicalHistory, page: () => MedicalHistory(), bindings: []);
 
-final nurseRoom = GetPage(name: kNurseRoom, page: () => NurseRoom(), bindings: []);
+final nurseRoom =
+    GetPage(name: kNurseRoom, page: () => NurseRoom(), bindings: []);
 
-final nurseRoomStudent = GetPage(name: kNurseRoomStudent, page: () => NurseRoomStudent(), bindings: []);
+final nurseRoomStudent = GetPage(
+    name: kNurseRoomStudent, page: () => NurseRoomStudent(), bindings: []);
 
-final detailRequest = GetPage(name: kDetailRequest, page: () => DetailRequest(), bindings: []);
+final detailRequest =
+    GetPage(name: kDetailRequest, page: () => DetailRequest(), bindings: []);
 
-final detailRequestStudent = GetPage(name: kDetailRequestStudent, page: () => RequestStudentDetail(), bindings: []);
+final detailRequestStudent = GetPage(
+    name: kDetailRequestStudent,
+    page: () => RequestStudentDetail(),
+    bindings: []);
 
 final dataPage = GetPage(name: kDataPage, page: () => DataPage(), bindings: []);
 
-final healthDataPage = GetPage(name: kHealthDataPage, page: () => HealthData(), bindings: []);
+final healthDataPage =
+    GetPage(name: kHealthDataPage, page: () => HealthData(), bindings: []);
 
-final healthWebview = GetPage(name: kHealthWebview, page: () => WebViewExample(), bindings: []);
+final healthWebview =
+    GetPage(name: kHealthWebview, page: () => WebViewExample(), bindings: []);
 
 final userPage = GetPage(name: kUserPage, page: () => UserPage(), bindings: []);
 
-final inforPage = GetPage(name: kInforPage, page: () => ProfilePage(), bindings: []);
+final inforPage =
+    GetPage(name: kInforPage, page: () => ProfilePage(), bindings: []);
 
-final contactPage = GetPage(name: kContactPage, page: () => Human3DPage(), bindings: []);
+final contactPage =
+    GetPage(name: kContactPage, page: () => Human3DPage(), bindings: []);
+
+final diseasePage =
+    GetPage(name: kDiseasePage, page: () => DiseasePage(), bindings: []);
+
+final detailDiseasePage = GetPage(
+    name: kDetailDisease, page: () => DetailDiseasePage(), bindings: []);
 
 final loginPage = GetPage(
     name: kLoginPage, page: () => const LoginPage(), binding: LoginBinding());
 
-final commingSoon = GetPage(name: kCommingSoonPage, page: () => ComingSoonPage(), bindings: []);
-
+final commingSoon =
+    GetPage(name: kCommingSoonPage, page: () => ComingSoonPage(), bindings: []);
 
 final List<GetPage> pages = [
   splashPage,
@@ -120,6 +153,8 @@ final List<GetPage> pages = [
   userPage,
   inforPage,
   contactPage,
+  diseasePage,
+  detailDiseasePage,
   loginPage,
   commingSoon,
 ];

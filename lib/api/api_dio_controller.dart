@@ -37,7 +37,7 @@ class ApiDioController {
     try {
       print(url);
       dio.options.headers['Authorization'] =
-      "${Get.find<GlobalController>().tokenType.value} ${Get.find<GlobalController>().token.value}";
+          "${Get.find<GlobalController>().tokenType.value} ${Get.find<GlobalController>().token.value}";
       final response = await dio.get(
         url,
         queryParameters: query,
@@ -75,7 +75,7 @@ class ApiDioController {
       print('Request body: $body');
       print('Request url: $url');
       dio.options.headers['Authorization'] =
-      "${Get.find<GlobalController>().tokenType.value} ${Get.find<GlobalController>().token.value}";
+          "${Get.find<GlobalController>().tokenType.value} ${Get.find<GlobalController>().token.value}";
       Response<Map<String, dynamic>> response = await dio.post(
         url,
         data: body,
@@ -105,7 +105,7 @@ class ApiDioController {
     try {
       print('Request url: $url');
       dio.options.headers['Authorization'] =
-      "${Get.find<GlobalController>().tokenType.value} ${Get.find<GlobalController>().token.value}";
+          "${Get.find<GlobalController>().tokenType.value} ${Get.find<GlobalController>().token.value}";
       Response<Map<String, dynamic>> response = await dio.put(
         url,
         queryParameters: query,
@@ -156,7 +156,7 @@ class ApiDioController {
         var dataResponse = ApiResponse.fromJson(map);
         listStudent = Paging<StudentModel>.fromJson(
           dataResponse.data,
-              (item) {
+          (item) {
             return StudentModel.fromJson(item);
           },
         ).items!;
@@ -177,7 +177,7 @@ class ApiDioController {
         var dataResponse = ApiResponse.fromJson(map);
         listRecord = Paging<MedicalRecordModel>.fromJson(
           dataResponse.data,
-              (item) {
+          (item) {
             return MedicalRecordModel.fromJson(item);
           },
         ).items!;
@@ -207,12 +207,16 @@ class ApiDioController {
     List<TeacherModel> listTeacher = [];
     await getData<List<TeacherModel>>(
       url: ApiURL.getTeacher,
+      query: {
+        "pageIndex": 0,
+        "pageSize": 20,
+      },
       dio: dio,
       asModel: (map) {
         // var dataResponse = ApiResponse.fromJson(map);
         listTeacher = Paging<TeacherModel>.fromJson(
           map,
-              (item) {
+          (item) {
             return TeacherModel.fromJson(item);
           },
         ).items!;
@@ -221,14 +225,20 @@ class ApiDioController {
     return listTeacher;
   }
 
-  static Future<AuthenticationResult> postLogin(String email, String password, String fireBaseToken, String deviceId) async {
+  static Future<AuthenticationResult> postLogin(String email, String password,
+      String fireBaseToken, String deviceId) async {
     Dio dio = Dio(options);
 
     AuthenticationResult authenticationResult = AuthenticationResult();
     await postMethods(
       url: ApiURL.postLogin,
       dio: dio,
-      body: LoginModel(username: email, password: password, fireBaseToken: fireBaseToken, deviceId: deviceId).toRawJson(),
+      body: LoginModel(
+              username: email,
+              password: password,
+              fireBaseToken: fireBaseToken,
+              deviceId: deviceId)
+          .toRawJson(),
       asModel: (map) {
         var response = ApiResponse.fromJson(map);
         authenticationResult = AuthenticationResult.fromJson(response.data);
@@ -252,36 +262,41 @@ class ApiDioController {
     return detailAccount;
   }
 
-  static Future<void> postRequest(String reason, String time, int teacherId,) async {
+  static Future<void> postRequest(
+    String reason,
+    String time,
+    int teacherId,
+  ) async {
     Dio dio = Dio(options);
 
     await postMethods(
       url: ApiURL.postRequest,
       dio: dio,
-      body: ReasonModel(reason: reason, time: time, teacherId: teacherId).toJson(),
-      asModel: (map) {
-      },
+      body: ReasonModel(reason: reason, time: time, teacherId: teacherId)
+          .toJson(),
+      asModel: (map) {},
     );
   }
 
-  static Future<List<RequestModel>> getRequest({int? studentId, int? classId, int? teacherId, int? status}) async {
+  static Future<List<RequestModel>> getRequest(
+      {int? studentId, int? classId, int? teacherId, int? status}) async {
     Dio dio = Dio(options);
 
     List<RequestModel> listRequest = [];
     await getData<List<RequestModel>>(
       url: ApiURL.getRequest,
       query: {
-        "StudentId" : studentId,
-        "ClassId" : classId,
-        "TeacherId" : teacherId,
-        "Status" : status,
+        "StudentId": studentId,
+        "ClassId": classId,
+        "TeacherId": teacherId,
+        "Status": status,
       },
       dio: dio,
       asModel: (map) {
         var dataResponse = ApiResponse.fromJson(map);
         listRequest = Paging<RequestModel>.fromJson(
           dataResponse.data,
-              (item) {
+          (item) {
             return RequestModel.fromJson(item);
           },
         ).items!;
@@ -296,8 +311,7 @@ class ApiDioController {
     await putMethods(
       url: '${ApiURL.acceptRequest}$id',
       dio: dio,
-      asModel: (map) {
-      },
+      asModel: (map) {},
     );
   }
 
@@ -307,9 +321,7 @@ class ApiDioController {
     await putMethods(
       url: '${ApiURL.declineRequest}$id',
       dio: dio,
-      asModel: (map) {
-      },
+      asModel: (map) {},
     );
   }
-
 }
